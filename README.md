@@ -1,2 +1,10 @@
 # spring-microservices-poc
-Very simplified shop sales system made in a microservices architecture using spring
+<-- ![architecture](docs/microservice-poc.png) -->
+
+## Development environment
+
+First you need a Kong(gateway), Keycloak and Kafka. 
+You can run 
+```bash 
+./dev.sh
+```   
