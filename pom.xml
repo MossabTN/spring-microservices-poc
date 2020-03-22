@@ -6,7 +6,8 @@
   <packaging>pom</packaging>
   
   <modules>
-    <module>customer-service</module>
     <module>gateway/zuul</module>
+    <module>customer-service</module>
+    <module>product-service</module>
   </modules>
 </project>

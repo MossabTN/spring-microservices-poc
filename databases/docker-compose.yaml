@@ -11,14 +11,14 @@ services:
     volumes:
       - ./data/mongo:/data/db
 
-
   postgresql:
     image: postgres:11.5
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_DB=quarkus
-      - POSTGRES_USER=quarkus
-      - POSTGRES_PASSWORD=quarkus
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - ./data/postgresDB:/var/lib/postresql/data
+      - ./data/postgres-entrypoint:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_DB=maxilog
+      - POSTGRES_USER=maxilog-user
+      - POSTGRES_PASSWORD=maxilog-password

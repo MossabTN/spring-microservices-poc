@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product
+    username: maxilog-product-user
+    password: maxilog-product-password
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+keycloak:
+  url: http://localhost:8180
+  realm: local
