@@ -7,5 +7,6 @@
   
   <modules>
     <module>customer-service</module>
+    <module>gateway/zuul</module>
   </modules>
 </project>

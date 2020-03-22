@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: dev
+keycloak:
+  url: http://localhost:8180
+  realm: local

@@ -1,0 +1,100 @@
+server:
+  port: 8080
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://admin:admin@localhost:8761/eureka/
+ribbon:
+  eureka:
+    enabled: true
+zuul:
+  sensitive-headers: Cookie,Set-Cookie
+  host:
+    max-total-connections: 1000
+    max-per-route-connections: 100
+  prefix: /
+  semaphore:
+    max-semaphores: 500
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
+
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      discovery:
+        healthCheckPath: /management/health
+        instanceId: gateway:${spring.application.instance-id:${random.value}}
+        service-name: gateway
+      config:
+        watch:
+          enabled: false
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: ${keycloak.url}/auth/realms/${keycloak.realm}
+        registration:
+          oidc:
+            authorization-grant-type: client_credentials
+            client-id: back
+            client-secret: back
+
+keycloak:
+  url: http://localhost:8180
+  realm: local
+
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: ['configprops', 'env', 'health', 'info', 'logfile', 'loggers', 'prometheus', 'threaddump']
+  endpoint:
+    health:
+      show-details: when_authorized
+      roles: 'ROLE_ADMIN'
+  info:
+    git:
+      mode: full
+  health:
+    mail:
+      enabled: false # When using the MailService, configure an SMTP server and set this to true
+  metrics:
+    export:
+      # Prometheus is the default metrics backend
+      prometheus:
+        enabled: true
+        step: 60
+    enable:
+      http: true
+      jvm: true
+      logback: true
+      process: true
+      system: true
+    distribution:
+      percentiles-histogram:
+        all: true
+      percentiles:
+        all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
+    tags:
+      application: ${spring.application.name}
+    web:
+      server:
+        request:
+          autotime:
+            enabled: true

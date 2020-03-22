@@ -1,42 +1,33 @@
 server:
   port: 8081
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://admin:admin@localhost:8761/eureka/
-
 spring:
   application:
     name: customer
+  profiles:
+    active: dev
   cloud:
-    config:
-      fail-fast: true
-      retry:
-        initial-interval: 1000
-        max-interval: 2000
-        max-attempts: 100
-      uri: http://admin:admin@localhost:8761/config
-      name: customer
-      profile: prod
-      label: master
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        healthCheckPath: /management/health
+        instanceId: customer:${spring.application.instance-id:${random.value}}
+        service-name: customer
+      config:
+        watch:
+          enabled: true
   security:
     oauth2:
       client:
         provider:
           oidc:
-            issuer-uri: ${keycloak-url}/auth/realms/${keycloak-realm}
+            issuer-uri: ${keycloak.url}/auth/realms/${keycloak.realm}
         registration:
           oidc:
+            authorization-grant-type: client_credentials
             client-id: back
             client-secret: back
-
-keycloak-url: http://localhost:8180
-keycloak-realm: local
-
-
 
 management:
   endpoints:

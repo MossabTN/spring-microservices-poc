@@ -15,7 +15,7 @@ export class NotificationService {
   private eb;
 
   constructor(private http: HttpClient, private keycloakService: KeycloakService) {
-    this.connectWS();
+    //this.connectWS();
   }
 
   async connectWS() {

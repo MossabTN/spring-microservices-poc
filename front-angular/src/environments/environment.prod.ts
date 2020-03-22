@@ -10,10 +10,10 @@ let keycloakConfig: KeycloakConfig = {
 export const environment = {
   production: false,
   apis: {
-    customer: 'http://localhost:8000/customer',
-    notification: 'http://localhost:8000/notification',
-    product: 'http://localhost:8000/product',
-    order: 'http://localhost:8000/order'
+    customer: 'http://localhost:8080/customer',
+    notification: 'http://localhost:8080/notification',
+    product: 'http://localhost:8080/product',
+    order: 'http://localhost:8080/order'
   },
   keycloak: keycloakConfig
 };

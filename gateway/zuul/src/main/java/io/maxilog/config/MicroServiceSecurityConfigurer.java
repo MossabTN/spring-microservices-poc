@@ -24,13 +24,9 @@ import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 
 @EnableWebSecurity
@@ -43,8 +39,6 @@ public class MicroServiceSecurityConfigurer extends WebSecurityConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
-                .and()
                 .csrf()
                 .disable()
                 .exceptionHandling()
@@ -78,21 +72,6 @@ public class MicroServiceSecurityConfigurer extends WebSecurityConfigurerAdapter
                 .oauth2Client();
     }
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Collections.singletonList("*"));
-        config.setAllowedHeaders(Arrays.asList("origin", "content-type", "accept", "authorization"));
-        config.setAllowCredentials(true);
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
-        config.setMaxAge(1209600L);
-        source.registerCorsConfiguration("/api/**", config);
-        source.registerCorsConfiguration("/management/**", config);
-        source.registerCorsConfiguration("/v2/api-docs", config);
-        return source;
-    }
-
     private Converter<Jwt, AbstractAuthenticationToken> authenticationConverter() {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new JwtGrantedAuthorityConverter());
@@ -117,7 +96,7 @@ public class MicroServiceSecurityConfigurer extends WebSecurityConfigurerAdapter
     @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
     public UserHolder userHolder(HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Map<String, Object> claims = ((Jwt) authentication.getPrincipal()).getClaims();
+        Map<String, Object> claims = ((Jwt)authentication.getPrincipal()).getClaims();
         return new UserHolder(claims.get("preferred_username").toString());
     }
 }
