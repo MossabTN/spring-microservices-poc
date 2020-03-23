@@ -9,5 +9,6 @@
     <module>gateway/zuul</module>
     <module>customer-service</module>
     <module>product-service</module>
+    <module>order-service</module>
   </modules>
 </project>
