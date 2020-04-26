@@ -2,6 +2,50 @@ spring:
   profiles:
     active: prod
 
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        healthCheckPath: /management/health
+        instanceId: product:${spring.application.instance-id:${random.value}}
+        service-name: product
+      config:
+        watch:
+          enabled: true
+    schema-registry-client:
+      endpoint: http://localhost:8881
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+        consumer:
+          useNativeEncoding: true
+      bindings:
+        input:
+          destination: product
+          content-type: application/*+avro
+      kafka:
+        binder:
+          producer-properties:
+            key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+            value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+            schema.registry.url: ${spring.cloud.schema-registry-client.endpoint}
+          consumer-properties:
+            key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+            value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+            schema.registry.url: ${spring.cloud.schema-registry-client.endpoint}
+            specific.avro.reader: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product
+    username: maxilog-product-user
+    password: maxilog-product-password
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+    jpa:
+      hibernate:
+        ddl-auto: update
 keycloak:
   url: http://keycloak:8080
   realm: local

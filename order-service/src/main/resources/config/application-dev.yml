@@ -1,6 +1,35 @@
 spring:
   profiles:
     active: dev
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        healthCheckPath: /management/health
+        instanceId: order:${spring.application.instance-id:${random.value}}
+        service-name: order
+      config:
+        watch:
+          enabled: true
+    schema-registry-client:
+      endpoint: http://localhost:8881
+    stream:
+      bindings:
+        input:
+          destination: order
+          content-type: application/*+avro
+        output-product:
+          destination: product
+          content-type: application/*+avro
+      kafka:
+        binder:
+          configuration:
+            default:
+              key:
+                serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+              value:
+                serde: org.apache.kafka.common.serialization.Serdes$StringSerde
   datasource:
     url: jdbc:postgresql://localhost:5432/order
     username: maxilog-order-user

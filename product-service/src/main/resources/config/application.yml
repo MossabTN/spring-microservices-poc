@@ -7,6 +7,10 @@ spring:
   profiles:
     active: dev
   cloud:
+    schema:
+      avro:
+        #schema-locations: classpath:avro/notification.avsc
+        dynamic-schema-generation-enabled: true
     consul:
       host: localhost
       port: 8500
