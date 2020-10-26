@@ -14,6 +14,7 @@ import {UsersService} from "./components/users/services/users.service";
 import {AuthInterceptor} from "./core/interceptor/auth.interceptor";
 import {FooterComponent, NavbarComponent} from "./layouts";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {RxStompService} from "@stomp/ng2-stompjs";
 
 let keycloakService: KeycloakService = new KeycloakService();
 
@@ -41,7 +42,8 @@ let keycloakService: KeycloakService = new KeycloakService();
         {
             provide: KeycloakService,
             useValue: keycloakService
-        }
+        },
+        RxStompService
     ],
     entryComponents: [AppComponent]
 })

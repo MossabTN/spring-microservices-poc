@@ -25,6 +25,8 @@
     "@clr/angular": "^2.0.2",
     "@clr/icons": "^2.0.2",
     "@clr/ui": "^2.0.2",
+    "@stomp/ng2-stompjs": "^8.0.0",
+    "@types/sockjs-client": "^1.1.1",
     "@webcomponents/custom-elements": "^1.2.4",
     "core-js": "^3.1.4",
     "keycloak-angular": "^7.0.1",

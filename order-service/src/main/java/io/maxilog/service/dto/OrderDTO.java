@@ -16,7 +16,7 @@ public class OrderDTO implements Serializable {
 
     private BigDecimal totalPrice;
 
-    private OrderStatus status;
+    private OrderStatus status= OrderStatus.CREATION;
 
     private LocalDateTime shipped;
 

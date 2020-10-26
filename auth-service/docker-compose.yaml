@@ -13,7 +13,7 @@ services:
       POSTGRES_PASSWORD: password
 
   keycloak:
-    image: jboss/keycloak:7.0.0
+    image: jboss/keycloak:10.0.0
     container_name: maxilog-keycloak
     ports:
       - '8180:8080'

@@ -1,0 +1,96 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: notification
+  profiles:
+    active: dev
+  cloud:
+    schema:
+      avro:
+        #schema-locations: classpath:avro/notification.avsc
+        dynamic-schema-generation-enabled: true
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        healthCheckPath: /management/health
+        instanceId: notification:${spring.application.instance-id:${random.value}}
+        service-name: notification
+      config:
+        watch:
+          enabled: true
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+        consumer:
+          useNativeDecoding: true
+      bindings:
+        input:
+          destination: notification
+          content-type: application/*+avro
+      kafka:
+        binder:
+          producer-properties:
+            key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+            value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+            schema.registry.url: ${spring.cloud.schema-registry-client.endpoint}
+          consumer-properties:
+            key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+            value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+            schema.registry.url: ${spring.cloud.schema-registry-client.endpoint}
+            specific.avro.reader: true
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: ${keycloak.url}/auth/realms/${keycloak.realm}
+        registration:
+          oidc:
+            authorization-grant-type: client_credentials
+            client-id: back
+            client-secret: back
+
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: ['configprops', 'env', 'health', 'info', 'logfile', 'loggers', 'prometheus', 'threaddump']
+  endpoint:
+    health:
+      show-details: when_authorized
+      roles: 'ROLE_ADMIN'
+  info:
+    git:
+      mode: full
+  health:
+    mail:
+      enabled: false # When using the MailService, configure an SMTP server and set this to true
+  metrics:
+    export:
+      # Prometheus is the default metrics backend
+      prometheus:
+        enabled: true
+        step: 60
+    enable:
+      http: true
+      jvm: true
+      logback: true
+      process: true
+      system: true
+    distribution:
+      percentiles-histogram:
+        all: true
+      percentiles:
+        all: 0, 0.5, 0.75, 0.95, 0.99, 1.0
+    tags:
+      application: ${spring.application.name}
+    web:
+      server:
+        request:
+          autotime:
+            enabled: true

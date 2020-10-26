@@ -14,30 +14,6 @@ spring:
           enabled: true
     schema-registry-client:
       endpoint: http://localhost:8881
-    stream:
-      default:
-        producer:
-          useNativeEncoding: true
-        consumer:
-          useNativeEncoding: true
-      bindings:
-        input:
-          destination: order
-          content-type: application/*+avro
-        output-product:
-          destination: product
-          content-type: application/*+avro
-      kafka:
-        binder:
-          producer-properties:
-            key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-            value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-            schema.registry.url: ${spring.cloud.schema-registry-client.endpoint}
-          consumer-properties:
-            key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-            value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
-            schema.registry.url: ${spring.cloud.schema-registry-client.endpoint}
-            specific.avro.reader: true
   datasource:
     url: jdbc:postgresql://localhost:5432/order
     username: maxilog-order-user

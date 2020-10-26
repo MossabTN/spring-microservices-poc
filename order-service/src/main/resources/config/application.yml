@@ -21,6 +21,33 @@ spring:
       config:
         watch:
           enabled: true
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+        consumer:
+          useNativeDecoding: true
+      bindings:
+        input:
+          destination: order
+          content-type: application/*+avro
+        output-product:
+          destination: product
+          content-type: application/*+avro
+        output-notification:
+          destination: notification
+          content-type: application/*+avro
+      kafka:
+        binder:
+          producer-properties:
+            key.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+            value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+            schema.registry.url: ${spring.cloud.schema-registry-client.endpoint}
+          consumer-properties:
+            key.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+            value.deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+            schema.registry.url: ${spring.cloud.schema-registry-client.endpoint}
+            specific.avro.reader: true
   security:
     oauth2:
       client:

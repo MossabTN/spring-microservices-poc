@@ -16,7 +16,8 @@ export const environment = {
   production: false,
   apis: {
     customer: 'http://localhost:8080/customer',
-    notification: 'http://localhost:8080/notification',
+    //notification: 'http://localhost:8080/notification',
+    notification: 'http://localhost:8082',
     product: 'http://localhost:8080/product',
     order: 'http://localhost:8080/order'
   },

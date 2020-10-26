@@ -9,16 +9,20 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=adminmaxilog
       - MONGO_INITDB_ROOT_PASSWORD=adminmaxilog2020
     volumes:
-      - ./data/mongo:/data/db
+      - mongoDB-data:/data/db
 
   postgresql:
     image: postgres:11.5
     ports:
       - "5432:5432"
     volumes:
-      - ./data/postgresDB:/var/lib/postresql/data
+      - mongoDB-data:/var/lib/postresql/data
       - ./data/postgres-entrypoint:/docker-entrypoint-initdb.d
     environment:
       - POSTGRES_DB=maxilog
       - POSTGRES_USER=maxilog-user
       - POSTGRES_PASSWORD=maxilog-password
+
+volumes:
+  mongoDB-data:
+  postgresDB-data:

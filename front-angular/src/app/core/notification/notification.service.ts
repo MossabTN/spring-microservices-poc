@@ -3,48 +3,128 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {KeycloakService} from "keycloak-angular";
 import * as  EventBus from 'vertx3-eventbus-client';
 import {Observable, Subject} from "rxjs";
-import {PaginationArgs} from "../../shared/pagination.args";
+import {PaginationArgs, PaginationPage} from "../../shared/pagination.args";
 import {NotificationConfig} from "./notification.config";
-import {Notification} from "./notification.model";
+import {Notification, SocketResponse} from "./notification.model";
+import {RxStompService} from "@stomp/ng2-stompjs";
+import {StompConfig} from "@stomp/stompjs/esm6/stomp-config";
 
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class NotificationService {
-  public notificationState = new Subject<any>();
 
-  private eb;
-
-  constructor(private http: HttpClient, private keycloakService: KeycloakService) {
-    this.connectWS();
-  }
-
-  async connectWS() {
-    const self = this;
-    const token = await this.keycloakService.getToken();
-    self.eb = new EventBus(NotificationConfig.ws + '?access-token=' + token);
-    self.eb.onopen = function () {
-      self.eb.registerHandler('notification', function (error, message) {
-        self.notificationState.next(JSON.parse(message.body))
-      });
-
-      self.eb.send('in', {fruit: 'apple', color: 'red'});
-      self.eb.publish('in', {fruit: 'grape', color: 'yellow'});
+    private notifications$: Observable<any>;
+    private subscribers: Array<any> = [];
+    private subscriberIndex = 0;
+    private stompConfig: StompConfig = {
+        heartbeatIncoming: 0,
+        heartbeatOutgoing: 10000,
+        reconnectDelay: 0,
+        debug: (str) => {
+            console.log(str);
+        }
     };
-    self.eb.onclose = (e) => {
-      //console.log(e);
-      setTimeout(()=> this.connectWS(), 1000);
-    };
-    //self.eb.enableReconnect(true);
-  }
 
-  sendWS(msg){
-    this.eb.send('in', msg);
-  }
+    constructor(private stompService: RxStompService,
+                private http: HttpClient, private keycloakService: KeycloakService) {
+        this.createObservableSocket();
+        this.connect();
+        this.notifications$.subscribe(value => console.log(value))
+    }
 
-  getAll(paginationArgs: PaginationArgs): Observable<Notification[]> {
-    let params = new HttpParams();
-    params = params.set('size', `${paginationArgs.pageSize}`);
-    params = params.set('page', `${paginationArgs.pageNumber}`);
-    return this.http.get<Notification[]>(NotificationConfig.api,{params});
-  }
+    /**
+     * Return an observable containing a subscribers list to the broker.
+     */
+    public getNotificationsObservable = () => {
+        return this.notifications$;
+    }
+
+    sendWS(msg) {
+        //TODO
+    }
+
+    getAll(paginationArgs: PaginationArgs): Observable<PaginationPage<Notification>> {
+        let params = new HttpParams();
+        params = params.set('size', `${paginationArgs.pageSize}`);
+        params = params.set('page', `${paginationArgs.pageNumber}`);
+        return this.http.get<PaginationPage<Notification>>(NotificationConfig.api, {params});
+    }
+
+    private createObservableSocket = () => {
+        this.notifications$ = new Observable(observer => {
+            const subscriberIndex = this.subscriberIndex++;
+            this.addToSubscribers({index: subscriberIndex, observer});
+            return () => {
+                this.removeFromSubscribers(subscriberIndex);
+            };
+        });
+    }
+
+    private addToSubscribers = subscriber => {
+        this.subscribers.push(subscriber);
+    }
+
+    private removeFromSubscribers = index => {
+        for (let i = 0; i < this.subscribers.length; i++) {
+            if (i === index) {
+                this.subscribers.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Connect and activate the client to the broker.
+     */
+    private connect = async () => {
+        const token = await this.keycloakService.getToken();
+        this.stompConfig.brokerURL = NotificationConfig.ws.replace('http', 'ws') + '?access_token=' + token;
+
+        this.stompService.stompClient.configure(this.stompConfig);
+        this.stompService.stompClient.onConnect = this.onSocketConnect;
+        this.stompService.stompClient.onStompError = this.onSocketError;
+        this.stompService.stompClient.onWebSocketError = this.onSocketError;
+        this.stompService.stompClient.onWebSocketClose = this.onSocketError;
+        this.stompService.stompClient.activate();
+    }
+
+    /**
+     * On each connect / reconnect, we subscribe all broker clients.
+     */
+    private onSocketConnect = frame => {
+        //this.stompService.stompClient.subscribe('/notifications', this.socketListener);
+        this.stompService.stompClient.subscribe('/user/notifications', this.socketListener);
+    }
+
+    private onSocketError = errorMsg => {
+        console.log('Broker reported error: ' + errorMsg);
+        if (this.stompService.stompClient.active) {
+            this.stompService.stompClient.deactivate();
+        }
+        setTimeout(() => {
+            this.keycloakService.getToken()
+                .then(token => {
+                    this.stompConfig.brokerURL = NotificationConfig.ws.replace('http', 'ws') + '?access_token=' + token;
+                    this.stompService.stompClient.configure(this.stompConfig);
+                    if (!this.stompService.stompClient.active) {
+                        this.stompService.stompClient.activate();
+                    }
+                })
+        }, 2000)
+
+    }
+
+    private socketListener = frame => {
+        this.subscribers.forEach(subscriber => {
+            subscriber.observer.next(this.getMessage(frame));
+        });
+    }
+
+    private getMessage = data => {
+        const response: SocketResponse = {
+            type: 'SUCCESS',
+            message: JSON.parse(data.body)
+        };
+        return response;
+    }
 }

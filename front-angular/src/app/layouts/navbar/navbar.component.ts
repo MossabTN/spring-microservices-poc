@@ -7,42 +7,43 @@ import {Notification} from "../../core/notification/notification.model";
 
 
 @Component({
-  selector: 'app-nav',
-  templateUrl: './navbar.component.html'
+    selector: 'app-nav',
+    templateUrl: './navbar.component.html'
 })
 export class NavbarComponent implements OnInit {
-  notifications : Notification[] = [];
-  userDetails: KeycloakProfile;
-  paginationArgs: PaginationArgs = { pageNumber: 0, pageSize: 2, sorts: [] };
+    notifications: Notification[] = [];
+    userDetails: KeycloakProfile;
+    paginationArgs: PaginationArgs = {pageNumber: 0, pageSize: 2, sorts: []};
 
-  constructor(private keycloakService: KeycloakService, private notificationService: NotificationService) {}
-
-  async ngOnInit() {
-    this.notificationService.getAll(this.paginationArgs)
-        .subscribe(value => {
-            this.notifications = value;
-        })
-
-    this.notificationService.notificationState.asObservable()
-        .subscribe(value => {
-          console.log(value);
-          this.notifications.unshift(value)
-        })
-
-    if (await this.keycloakService.isLoggedIn()) {
-      this.userDetails = await this.keycloakService.loadUserProfile();
+    constructor(private keycloakService: KeycloakService, private notificationService: NotificationService) {
     }
-  }
 
-  onNotificationMenuClick(){
-    console.log('hhhh');
-  }
+    async ngOnInit() {
+        this.notificationService.getAll(this.paginationArgs)
+            .subscribe(value => {
+                this.notifications = value.content;
+            })
 
-  async doLogout() {
-    await this.keycloakService.logout();
-  }
+        this.notificationService.getNotificationsObservable()
+            .subscribe(value => {
+                this.notifications.unshift(value.message)
+            })
 
-  hasSeenNotification(): boolean{
-    return this.notifications.some(value => value.seen == false);
-  }
+        if (await this.keycloakService.isLoggedIn()) {
+            this.userDetails = await this.keycloakService.loadUserProfile();
+        }
+    }
+
+    onNotificationMenuClick() {
+        console.log('hhhh');
+    }
+
+    async doLogout() {
+        await this.keycloakService.logout();
+    }
+
+    hasSeenNotification(): boolean {
+        //return true;
+        return this.notifications.some(value => value.seen == false);
+    }
 }

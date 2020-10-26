@@ -8,6 +8,7 @@
   <modules>
     <module>gateway/zuul</module>
     <module>customer-service</module>
+    <module>notification-service</module>
     <module>product-service</module>
     <module>order-service</module>
   </modules>

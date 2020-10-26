@@ -1,15 +1,20 @@
 package io.maxilog.service.impl;
 
+import io.maxilog.config.kafka.ProductMessaging;
 import io.maxilog.domain.Product;
 import io.maxilog.domain.UserHolder;
+import io.maxilog.order.OrderAvro;
 import io.maxilog.repository.ProductRepository;
 import io.maxilog.service.ProductService;
 import io.maxilog.service.dto.ProductDTO;
 import io.maxilog.service.mapper.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +26,14 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final ProductMessaging productMessaging;
     private final UserHolder userHolder;
 
     public ProductServiceImpl(ProductRepository productRepository,
-                              ProductMapper productMapper, UserHolder userHolder) {
+                              ProductMapper productMapper, ProductMessaging productMessaging, UserHolder userHolder) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.productMessaging = productMessaging;
         this.userHolder = userHolder;
     }
 
@@ -52,17 +59,13 @@ public class ProductServiceImpl implements ProductService {
                 .map(productMapper::toDto);
     }
 
-    /*@Incoming("input")
-    public CompletionStage consumeKafkaOrder(KafkaMessage<String, OrderAvro> message) {
+    @StreamListener(Sink.INPUT)
+    public void consumeKafkaOrder(Message<OrderAvro> message) {
         LOG.info("receiving order from kafka");
-        CompletableFuture.runAsync(() -> {
-            message.getPayload().getOrderItems().forEach(orderItem -> {
-                productRepository.decreaseProductQuantity(Long.valueOf(orderItem.getProductId()), Integer.parseInt(orderItem.getQuantity()));
-            });
-        });
-        return message.ack();
+        LOG.info(message.getPayload().toString());
+
     }
-*/
+
     @Override
     public ProductDTO findOne(long id) {
         LOG.debug("Request to get User : {}", id);

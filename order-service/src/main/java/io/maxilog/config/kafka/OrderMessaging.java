@@ -14,4 +14,7 @@ public interface OrderMessaging {
 
     @Output("output-product")
     MessageChannel outputProduct();
+
+    @Output("output-notification")
+    MessageChannel outputNotification();
 }
