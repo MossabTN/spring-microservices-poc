@@ -26,6 +26,6 @@ public class SocketBrokerConfig implements WebSocketMessageBrokerConfigurer {
         //registry.addEndpoint(SECURED_CHAT_ROOM).setAllowedOrigins("*").withSockJS();
         //registry.addEndpoint(SECURED_CHAT).setAllowedOrigins("*").withSockJS();
         registry.addEndpoint("/ws").setAllowedOrigins("*");
-        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();;
+        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
     }
 }

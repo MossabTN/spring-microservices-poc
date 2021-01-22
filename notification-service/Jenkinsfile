@@ -1,0 +1,62 @@
+def label = "worker-${UUID.randomUUID().toString()}"
+
+podTemplate(
+        label: label,
+        containers: [
+                containerTemplate(name: 'maven', image: 'maven:3.6.3-openjdk-11', command: 'cat', ttyEnabled: true),
+                containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+                containerTemplate(name: 'kubectl', image: 'bitnami/kubectl:1.20.2', command: 'cat', ttyEnabled: true)
+        ],
+        volumes: [
+                hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
+                persistentVolumeClaim(mountPath: '/root/.m2', claimName: 'maven-repo', readOnly: false)
+        ]) {
+    node(label) {
+        dir("notification-service") {
+            try {
+                stage('Test') {
+                    try {
+                        container('maven') {
+                            //sh 'mvn test'
+                            sh 'mvn -DskipTests=true clean compile'
+                        }
+                    }
+                    catch (exc) {
+                        println "Failed to test - ${currentBuild.fullDisplayName}"
+                        throw (exc)
+                    }
+                }
+                stage('SonarQube analysis') {
+                    container('maven') {
+                        withSonarQubeEnv(credentialsId: 'sonarqube', installationName: 'sonarqube.maxilog.tech') {
+                            sh 'mvn sonar:sonar'
+                        }
+                        timeout(time: 5, unit: 'MINUTES') {
+                            def qg = waitForQualityGate()
+                            if (qg.status != 'OK') {
+                                error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                            }
+                        }
+                    }
+                }
+                stage('Build') {
+                    container('maven') {
+                        sh 'mvn -B clean package -Dmaven.test.skip=true -Dfindbugs.fork=false'
+                    }
+                }
+                stage('Create Docker images') {
+                    container('docker') {
+                        sh "docker login -u jenkins -p jenkins docker.maxilog.tech"
+                        sh "docker build -t docker.maxilog.tech/poc/notification-service ."
+                        sh "docker push docker.maxilog.tech/poc/notification-service:latest"
+                    }
+                }
+            } catch (e) {
+                currentBuild.result = "FAILED"
+                throw e
+            } finally {
+
+            }
+        }
+    }
+}
