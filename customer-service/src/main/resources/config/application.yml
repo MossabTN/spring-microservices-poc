@@ -2,6 +2,8 @@ server:
   port: 8081
 
 spring:
+  main:
+    lazy-initialization: true
   application:
     name: customer
   profiles:
@@ -12,7 +14,7 @@ spring:
       port: 8500
       discovery:
         healthCheckPath: /management/health
-        instanceId: customer:${spring.application.instance-id:${random.value}}
+        instanceId: custoamer:${spring.application.instance-id:${random.value}}
         service-name: customer
       config:
         watch:

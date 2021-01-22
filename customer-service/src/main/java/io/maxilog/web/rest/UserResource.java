@@ -18,7 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
-@RestController(value = "userRessource")
+@RestController(value = "userResource")
 @RequestMapping("/api/")
 public class UserResource {
 
@@ -48,21 +48,21 @@ public class UserResource {
 
     @GetMapping("/users/{id}")
     @Timed
-    public ResponseEntity findById(@PathParam("id") String id) {
+    public ResponseEntity<?> findById(@PathParam("id") String id) {
         LOGGER.info("REST request to get User : {}", id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(userService.findOne(id)));
     }
 
     @GetMapping("/users/username/{username}")
     @Timed
-    public ResponseEntity findByUsername(@PathParam("username") String username) {
+    public ResponseEntity<?> findByUsername(@PathParam("username") String username) {
         LOGGER.info("REST request to get User by username: {}", username);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(userService.findUsername(username)));
     }
 
     @PostMapping("/users")
     @Timed
-    public ResponseEntity create(UserDTO userDTO) throws URISyntaxException {
+    public ResponseEntity<?> create(UserDTO userDTO) throws URISyntaxException {
         LOGGER.info("REST request to save User : {}", userDTO);
         if (userDTO.getId() != null) {
             throw new HystrixBadRequestException("A new user cannot already have an ID");
@@ -74,7 +74,7 @@ public class UserResource {
 
     @PutMapping("/users")
     @Timed
-    public ResponseEntity update(UserDTO userDTO) {
+    public ResponseEntity<?> update(UserDTO userDTO) {
         LOGGER.info("REST request to update User : {}", userDTO);
         if (userDTO.getId() == null) {
             throw new HystrixBadRequestException("Updated user must have an ID");
@@ -86,10 +86,10 @@ public class UserResource {
 
     @DeleteMapping("/users/{id}")
     @Timed
-    public ResponseEntity.BodyBuilder delete(@PathParam("id") String id) {
+    public ResponseEntity<?> delete(@PathParam("id") String id) {
         LOGGER.info("REST request to delete User : {}", id);
         userService.delete(id);
-        return ResponseEntity.ok();
+        return ResponseEntity.ok().build();
     }
 
 }
