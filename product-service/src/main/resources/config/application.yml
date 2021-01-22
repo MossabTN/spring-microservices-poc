@@ -44,6 +44,8 @@ spring:
             specific.avro.reader: true
   security:
     oauth2:
+      authorization:
+        token-key-access: permitAll()
       client:
         provider:
           oidc:
@@ -94,3 +96,10 @@ management:
         request:
           autotime:
             enabled: true
+
+
+security:
+  oauth2:
+    authorization:
+      token-key-access: permitAll()
+      check-token-access: permitAll()

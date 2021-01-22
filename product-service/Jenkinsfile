@@ -17,7 +17,7 @@ podTemplate(
         def gitBranch = myRepo.GIT_BRANCH
         def shortGitCommit = "${gitCommit[0..10]}"
         def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
-        dir("notification-service") {
+        dir("product-service") {
             try {
                 stage('Test') {
                     try {
@@ -52,8 +52,8 @@ podTemplate(
                 stage('Create Docker images') {
                     container('docker') {
                         sh "docker login -u jenkins -p jenkins docker.maxilog.tech"
-                        sh "docker build -t docker.maxilog.tech/poc/notification-service ."
-                        sh "docker push docker.maxilog.tech/poc/notification-service:latest"
+                        sh "docker build -t docker.maxilog.tech/poc/product-service ."
+                        sh "docker push docker.maxilog.tech/poc/product-service:latest"
                     }
                 }
             } catch (e) {

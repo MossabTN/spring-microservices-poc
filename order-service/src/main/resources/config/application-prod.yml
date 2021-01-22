@@ -21,9 +21,9 @@ spring:
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5
-    jpa:
-      hibernate:
-        ddl-auto: update
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 keycloak:
   url: http://keycloak:8080
