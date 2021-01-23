@@ -3,6 +3,7 @@ def label = "worker-${UUID.randomUUID().toString()}"
 podTemplate(
         label: label,
         containers: [
+                containerTemplate(name: 'maven', image: 'maven:3.6.3-openjdk-11', command: 'cat', ttyEnabled: true),
                 containerTemplate(name: 'node', image: 'node:14.4', command: 'cat', ttyEnabled: true),
                 containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
                 containerTemplate(name: 'kubectl', image: 'bitnami/kubectl:1.20.2', command: 'cat', ttyEnabled: true)
@@ -16,7 +17,12 @@ podTemplate(
         def gitBranch = myRepo.GIT_BRANCH
         def shortGitCommit = "${gitCommit[0..10]}"
         def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
+        def version ='latest'
         dir("front-angular") {
+            container('maven') {
+                version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
+                version = version.substring(0, version.length() - 9)
+            }
             try {
                 stage('Build') {
                     container('node') {
@@ -27,8 +33,8 @@ podTemplate(
                 stage('Create Docker images') {
                     container('docker') {
                         sh "docker login -u jenkins -p jenkins docker.maxilog.tech"
-                        sh "docker build -t docker.maxilog.tech/poc/front ."
-                        sh "docker push docker.maxilog.tech/poc/front:latest"
+                        sh "docker build -t docker.maxilog.tech/poc/front:${version} ."
+                        sh "docker push docker.maxilog.tech/poc/front:${version}"
                     }
                 }
             } catch (e) {
