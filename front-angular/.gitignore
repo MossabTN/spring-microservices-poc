@@ -36,3 +36,6 @@ release.properties
 
 # Npm
 node_modules/
+
+# Angular
+dist/
