@@ -55,8 +55,8 @@ podTemplate(
                 stage('Create Docker images') {
                     container('docker') {
                         sh "docker login -u jenkins -p jenkins docker.maxilog.tech"
-                        sh "docker build -t docker.maxilog.tech/poc/gateway:${version} ."
-                        sh "docker push docker.maxilog.tech/poc/gateway:${version}"
+                        sh "docker build -t docker.maxilog.tech/poc/spring/gateway:${version} ."
+                        sh "docker push docker.maxilog.tech/poc/spring/gateway:${version}"
                     }
                 }
             } catch (e) {
