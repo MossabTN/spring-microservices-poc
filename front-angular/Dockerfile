@@ -1,5 +1,5 @@
 FROM nginx:alpine
-
+EXPOSE 8080
 COPY /dist /usr/share/nginx/html
 COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
 
