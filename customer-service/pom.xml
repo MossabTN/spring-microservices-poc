@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>io.maxilog</groupId>
 	<artifactId>customer-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>customer-service</name>
 	<description>Customer service</description>
 
