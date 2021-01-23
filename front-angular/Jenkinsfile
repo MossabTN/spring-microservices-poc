@@ -1,0 +1,42 @@
+def label = "worker-${UUID.randomUUID().toString()}"
+
+podTemplate(
+        label: label,
+        containers: [
+                containerTemplate(name: 'node', image: 'node:14.4', command: 'cat', ttyEnabled: true),
+                containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+                containerTemplate(name: 'kubectl', image: 'bitnami/kubectl:1.20.2', command: 'cat', ttyEnabled: true)
+        ],
+        volumes: [
+                hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
+        ]) {
+    node(label) {
+        def myRepo = checkout scm
+        def gitCommit = myRepo.GIT_COMMIT
+        def gitBranch = myRepo.GIT_BRANCH
+        def shortGitCommit = "${gitCommit[0..10]}"
+        def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
+        dir("front-angular") {
+            try {
+                stage('Build') {
+                    container('node') {
+                        sh 'npm install'
+                        sh 'npm run build'
+                    }
+                }
+                stage('Create Docker images') {
+                    container('docker') {
+                        sh "docker login -u jenkins -p jenkins docker.maxilog.tech"
+                        sh "docker build -t docker.maxilog.tech/poc/front ."
+                        sh "docker push docker.maxilog.tech/poc/front:latest"
+                    }
+                }
+            } catch (e) {
+                currentBuild.result = "FAILED"
+                throw e
+            } finally {
+
+            }
+        }
+    }
+}

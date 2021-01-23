@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./node_modules/@angular/cli/bin/ng serve --port=4200",
-    "build": "node ./node_modules/@angular/cli/bin/ng build",
+    "build": "node ./node_modules/@angular/cli/bin/ng build --prod",
     "test": "node ./node_modules/@angular/cli/bin/ng test",
     "lint": "node ./node_modules/@angular/cli/bin/ng lint",
     "e2e": "node ./node_modules/@angular/cli/bin/ng e2e"

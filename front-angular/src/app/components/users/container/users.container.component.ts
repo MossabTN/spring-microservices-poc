@@ -14,7 +14,7 @@ export class UsersContainerComponent implements OnInit{
   users :Users[] = [];
   loading = true;
   total = 0;
-  public paginationArgs: PaginationArgs = { pageNumber: 0, pageSize: 2, sorts: [] };
+  public paginationArgs: PaginationArgs = { pageNumber: 0, pageSize: 10, sorts: [] };
 
   modalOpen = false;
 
