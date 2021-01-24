@@ -1,0 +1,4 @@
+auth:
+  database : notification
+  username: maxilog-notification-user
+  password: maxilog-notification-password

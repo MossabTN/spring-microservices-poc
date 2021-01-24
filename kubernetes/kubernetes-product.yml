@@ -1,0 +1,56 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8083
+  selector:
+    app: product
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+        - name: product
+          image: docker.maxilog.tech/poc/spring/product:1.0.0
+          ports:
+            - containerPort: 8083
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SPRING_CLOUD_CONSUL_HOST
+              value: consul-server
+            - name: SPRING_CLOUD_CONSUL_PORT
+              value: '8500'
+            - name: KEYCLOAK_URL
+              value: https://auth.maxilog.tech
+            - name: KEYCLOAK_REALM
+              value: poc
+            - name: SPRING_DATASOURCE_DB
+              value: product
+            - name: SPRING_DATASOURCE_USERNAME
+              value: maxilog-product-user
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: maxilog-product-password
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgresql:5432/$(SPRING_DATASOURCE_DB)
+            - name: SPRING_CLOUD_SCHEMA_REGISTRY_CLIENT_ENDPOINT
+              value: http://kafka-cp-schema-registry:8081
+            - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
+              value: kafka-cp-kafka:9092

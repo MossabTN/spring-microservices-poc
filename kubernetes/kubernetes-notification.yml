@@ -1,0 +1,56 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8082
+  selector:
+    app: notification
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+        - name: notification
+          image: docker.maxilog.tech/poc/spring/notification:1.0.0
+          ports:
+            - containerPort: 8082
+          imagePullPolicy: Always
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SPRING_CLOUD_CONSUL_HOST
+              value: consul-server
+            - name: SPRING_CLOUD_CONSUL_PORT
+              value: '8500'
+            - name: KEYCLOAK_URL
+              value: https://auth.maxilog.tech
+            - name: KEYCLOAK_REALM
+              value: poc
+            - name: SPRING_DATA_MONGODB_DB
+              value: notification
+            - name: SPRING_DATA_MONGODB_USERNAME
+              value: maxilog-notification-user
+            - name: SPRING_DATA_MONGODB_PASSWORD
+              value: maxilog-notification-password
+            - name: SPRING_DATA_MONGODB_URI
+              value: mongodb://mongodb:27017/$(SPRING_DATA_MONGODB_DB)
+            - name: SPRING_CLOUD_SCHEMA_REGISTRY_CLIENT_ENDPOINT
+              value: http://kafka-cp-schema-registry:8081
+            - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
+              value: kafka-cp-kafka:9092

@@ -1,0 +1,25 @@
+cp-kafka-connect:
+  enabled: false
+cp-ksql-server:
+  enabled: false
+cp-control-center:
+  enabled: false
+cp-schema-registry:
+  servers: 1
+  prometheus:
+    jmx:
+      enabled: false
+cp-kafka-rest:
+  prometheus:
+    jmx:
+      enabled: false
+cp-zookeeper:
+  servers: 1
+  prometheus:
+    jmx:
+      enabled: false
+cp-kafka:
+  brokers: 3
+  prometheus:
+    jmx:
+      enabled: false
