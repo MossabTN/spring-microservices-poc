@@ -30,3 +30,4 @@ spec:
           image: docker.maxilog.tech/poc/spring/front:1.0.0
           ports:
             - containerPort: 8080
+          imagePullPolicy: Always
