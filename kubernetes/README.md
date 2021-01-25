@@ -16,7 +16,7 @@ helm install mongodb bitnami/mongodb -f values/mongodb.yml -n poc-spring --versi
 ##### install consul
 ```bash
 helm repo add hashicorp https://helm.releases.hashicorp.com
-helm install consul hashicorp/consul --set global.name=consul -n poc-spring --version 0.20.1
+helm install consul hashicorp/consul -f values/consul.yml -n poc-spring --version 0.20.1
 ```
 
 ##### install kafka && schema registry
