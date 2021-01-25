@@ -35,7 +35,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
             - name: SPRING_CLOUD_CONSUL_HOST
-              value: consul-server
+              value: consul-consul-server
             - name: SPRING_CLOUD_CONSUL_PORT
               value: '8500'
             - name: SPRING_CLOUD_CONSUL_DISCOVERY_HOSTNAME
