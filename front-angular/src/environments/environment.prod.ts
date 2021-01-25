@@ -10,10 +10,11 @@ let keycloakConfig: KeycloakConfig = {
 export const environment = {
   production: false,
   apis: {
-    customer: 'https://poc-spring.maxilog.tech/api/customer',
-    notification: 'https://poc-spring.maxilog.tech/api/notification',
-    product: 'https://poc-spring.maxilog.tech/api/product',
-    order: 'https://poc-spring.maxilog.tech/api/order'
+    customer: '/api/customer',
+    notification: '/api/notification',
+    product: '/api/product',
+    order: '/api/order',
+    websocket: 'https://poc-spring.maxilog.tech/websocket'
   },
   keycloak: keycloakConfig
 };

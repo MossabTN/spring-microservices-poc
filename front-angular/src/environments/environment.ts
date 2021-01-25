@@ -16,10 +16,10 @@ export const environment = {
   production: false,
   apis: {
     customer: 'http://localhost:8080/customer',
-    //notification: 'http://localhost:8080/notification',
-    notification: 'http://localhost:8082',
+    notification: 'http://localhost:8080/notification',
     product: 'http://localhost:8080/product',
-    order: 'http://localhost:8080/order'
+    order: 'http://localhost:8080/order',
+    websocket: 'http://localhost:8082'
   },
   keycloak: keycloakConfig
 };
