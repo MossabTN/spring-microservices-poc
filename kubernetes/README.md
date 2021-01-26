@@ -25,4 +25,9 @@ helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
 helm install kafka confluentinc/cp-helm-charts -f values/kafka.yml -n poc-spring --version 0.6.0
 ```
 
+##### install poc-spring
+```bash
+kubectl apply -f ./
+```
+
 
