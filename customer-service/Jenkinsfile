@@ -21,17 +21,11 @@ podTemplate(
         dir("customer-service") {
             try {
                 stage('Test') {
-                    try {
-                        container('maven') {
-                            version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
-                            version = version.substring(0, version.length() - 9)
-                            //sh 'mvn test'
-                            sh 'mvn -DskipTests=true clean compile'
-                        }
-                    }
-                    catch (exc) {
-                        println "Failed to test - ${currentBuild.fullDisplayName}"
-                        throw (exc)
+                    container('maven') {
+                        version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
+                        version = version.substring(0, version.length() - 9)
+                        //sh 'mvn test'
+                        sh 'mvn -DskipTests=true clean compile'
                     }
                 }
                 stage('SonarQube analysis') {

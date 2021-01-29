@@ -1,0 +1,22 @@
+elasticsearch:
+  client:
+    replicas: 0
+  master:
+    replicas: 1
+  data:
+    replicas: 1
+kibana:
+  enabled: true
+  ingress:
+    enabled: true
+    hosts:
+      - "kibana.maxilog.tech"
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    tls:
+      - hosts:
+          - kibana.maxilog.tech
+        secretName: kibana.maxilog.tech-tls

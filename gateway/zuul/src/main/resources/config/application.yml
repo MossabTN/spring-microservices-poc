@@ -1,15 +1,6 @@
 server:
   port: 8080
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://admin:admin@localhost:8761/eureka/
-ribbon:
-  eureka:
-    enabled: true
 zuul:
   sensitive-headers: Cookie,Set-Cookie
   host:
@@ -35,6 +26,8 @@ spring:
     active: dev
   cloud:
     consul:
+      host: localhost
+      port: 8500
       discovery:
         healthCheckPath: /management/health
         instanceId: gateway:${spring.application.instance-id:${random.value}}
@@ -98,3 +91,11 @@ management:
         request:
           autotime:
             enabled: true
+
+opentracing:
+  jaeger:
+    service-name: ${spring.application.name}
+    enabled: true
+    udp-sender:
+      host: localhost
+      port: 6831

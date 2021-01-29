@@ -30,4 +30,10 @@ helm install kafka confluentinc/cp-helm-charts -f values/kafka.yml -n poc-spring
 kubectl apply -f ./
 ```
 
+##### install elk
+```bash
+helm repo add helm-stable https://charts.helm.sh/stable
+helm install elk helm-stable/elastic-stack -f values/elk.yml -n elk --version 2.0.6
+```
+
 

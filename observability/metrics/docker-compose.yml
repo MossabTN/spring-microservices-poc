@@ -1,29 +1,35 @@
-version: '3.2'
+version: '3.4'
 
 services:
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.18.1
     restart: always
     ports:
-      - "9090:9090"
+      - 9090:9090
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
+      # On MacOS, remove next line and replace localhost by host.docker.internal in prometheus/prometheus.yml
     network_mode: host
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
 
   grafana:
     container_name: grafana
-    image: grafana/grafana:latest
+    image: grafana/grafana:7.0.1
     restart: always
     depends_on:
       - prometheus
     ports:
-      - "3000:3000"
+      - 3000:3000
     volumes:
+      - ./grafana/:/etc/grafana/provisioning/
       - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
 
 volumes:
   prometheus_data: {}

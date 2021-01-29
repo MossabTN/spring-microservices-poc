@@ -94,3 +94,11 @@ management:
         request:
           autotime:
             enabled: true
+
+opentracing:
+  jaeger:
+    service-name: ${spring.application.name}
+    enabled: true
+    udp-sender:
+      host: localhost
+      port: 6831

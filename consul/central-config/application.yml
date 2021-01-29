@@ -1,3 +1,14 @@
-keycloak:
-  url: http://localhost:8180
-  realm: local
+#keycloak:
+#  url: http://localhost:8180
+#  realm: local
+#logstash:
+#  enabled: false
+#  host: localhost
+#  port: 5000
+#opentracing:
+#  jaeger:
+#    service-name: ${spring.application.name}
+#    enabled: true
+#    udp-sender:
+#      host: localhost
+#      port: 6831
