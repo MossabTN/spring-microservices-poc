@@ -23,3 +23,7 @@ spring:
 keycloak:
   url: http://localhost:8180
   realm: local
+logstash:
+  enabled: false
+  host: localhost
+  port: 5000

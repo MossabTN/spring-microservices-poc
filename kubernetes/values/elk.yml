@@ -5,6 +5,27 @@ elasticsearch:
     replicas: 1
   data:
     replicas: 1
+logstash:
+  service:
+    ports:
+      syslog-tcp:
+        port: 1514
+        targetPort: syslog-tcp
+        protocol: TCP
+  ports:
+    - name: syslog-tcp
+      containerPort: 1514
+      protocol: TCP
+  inputs:
+    main: |-
+      input {
+        tcp {
+            port => 1514
+            type => syslog
+            codec => json_lines
+        }
+      }
+
 kibana:
   enabled: true
   ingress:

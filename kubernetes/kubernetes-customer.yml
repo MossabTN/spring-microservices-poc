@@ -46,3 +46,9 @@ spec:
               value: https://auth.maxilog.tech
             - name: KEYCLOAK_REALM
               value: poc
+            - name: LOGSTASH_ENABLED
+              value: 'false'
+            - name: LOGSTASH_HOST
+              value: logstash
+            - name: LOGSTASH_PORT
+              value: '1514'
