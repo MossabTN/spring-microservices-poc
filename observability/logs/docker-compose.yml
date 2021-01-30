@@ -14,7 +14,7 @@ services:
   logstash:
     image: docker.elastic.co/logstash/logstash-oss:6.8.2
     volumes:
-      - source: ./pipelines
+      - source: ./logstash
         target: /usr/share/logstash/pipeline
         type: bind
     ports:

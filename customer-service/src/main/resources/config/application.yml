@@ -2,8 +2,6 @@ server:
   port: 8081
 
 spring:
-  main:
-    lazy-initialization: true
   application:
     name: customer
   profiles:
