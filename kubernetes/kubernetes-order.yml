@@ -59,8 +59,8 @@ spec:
             - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
               value: kafka-cp-kafka:9092
             - name: LOGSTASH_ENABLED
-              value: 'false'
+              value: 'true'
             - name: LOGSTASH_HOST
-              value: logstash
+              value: elk-logstash.elk
             - name: LOGSTASH_PORT
               value: '1514'

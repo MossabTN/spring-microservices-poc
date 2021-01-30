@@ -47,8 +47,8 @@ spec:
             - name: KEYCLOAK_REALM
               value: poc
             - name: LOGSTASH_ENABLED
-              value: 'false'
+              value: 'true'
             - name: LOGSTASH_HOST
-              value: logstash
+              value: elk-logstash.elk
             - name: LOGSTASH_PORT
               value: '1514'

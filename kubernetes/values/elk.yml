@@ -1,11 +1,13 @@
 elasticsearch:
   client:
-    replicas: 0
-  master:
     replicas: 1
+  master:
+    replicas: 2
   data:
     replicas: 1
 logstash:
+  elasticsearch:
+    host: elk-elasticsearch-client
   service:
     ports:
       syslog-tcp:
@@ -28,6 +30,13 @@ logstash:
 
 kibana:
   enabled: true
+  image:
+    tag: "6.8.6"
+  env:
+    ELASTICSEARCH_HOSTS: http://elk-elasticsearch-client:9200
+  files:
+    kibana.yml:
+      elasticsearch.hosts: http://elk-elasticsearch-client:9200
   ingress:
     enabled: true
     hosts:
