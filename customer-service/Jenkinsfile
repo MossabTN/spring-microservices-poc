@@ -17,7 +17,7 @@ podTemplate(
         def gitBranch = myRepo.GIT_BRANCH
         def shortGitCommit = "${gitCommit[0..10]}"
         def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
-        def version ='latest'
+        def version = 'latest'
         dir("customer-service") {
             try {
                 stage('Test') {
@@ -25,7 +25,11 @@ podTemplate(
                         version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
                         version = version.substring(0, version.length() - 9)
                         //sh 'mvn test'
-                        sh 'mvn -DskipTests=true clean compile'
+                    }
+                }
+                stage('Build') {
+                    container('maven') {
+                        sh 'mvn -B clean package -Dmaven.test.skip=true -Dfindbugs.fork=false'
                     }
                 }
                 stage('SonarQube analysis') {
@@ -41,11 +45,6 @@ podTemplate(
                         }
                     }
                 }
-                stage('Build') {
-                    container('maven') {
-                        sh 'mvn -B clean package -Dmaven.test.skip=true -Dfindbugs.fork=false'
-                    }
-                }
                 stage('Create Docker images') {
                     container('docker') {
                         sh "docker login -u jenkins -p jenkins docker.maxilog.tech"
@@ -53,6 +52,11 @@ podTemplate(
                         sh "docker push docker.maxilog.tech/poc/spring/customer:${version}"
                     }
                 }
+//                stage('Deploy kubernetes') {
+//                    container('kubectl') {
+//                        sh "kubectl rollout restart deployment/customer -n poc-spring"
+//                    }
+//                }
             } catch (e) {
                 currentBuild.result = "FAILED"
                 throw e

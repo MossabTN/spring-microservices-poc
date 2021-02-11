@@ -6,17 +6,6 @@ spring:
     name: customer
   profiles:
     active: dev
-  cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        healthCheckPath: /management/health
-        instanceId: custoamer:${spring.application.instance-id:${random.value}}
-        service-name: customer
-      config:
-        watch:
-          enabled: true
   security:
     oauth2:
       client:

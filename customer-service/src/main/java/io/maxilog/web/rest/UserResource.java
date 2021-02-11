@@ -1,7 +1,6 @@
 package io.maxilog.web.rest;
 
 
-import com.netflix.hystrix.exception.HystrixBadRequestException;
 import io.maxilog.service.UserService;
 import io.maxilog.service.dto.Page;
 import io.maxilog.service.dto.Pageable;
@@ -65,7 +64,7 @@ public class UserResource {
     public ResponseEntity<?> create(UserDTO userDTO) throws URISyntaxException {
         LOGGER.info("REST request to save User : {}", userDTO);
         if (userDTO.getId() != null) {
-            throw new HystrixBadRequestException("A new user cannot already have an ID");
+            throw new RuntimeException("A new user cannot already have an ID");
         }
 
         UserDTO result = userService.save(userDTO);
@@ -77,7 +76,7 @@ public class UserResource {
     public ResponseEntity<?> update(UserDTO userDTO) {
         LOGGER.info("REST request to update User : {}", userDTO);
         if (userDTO.getId() == null) {
-            throw new HystrixBadRequestException("Updated user must have an ID");
+            throw new RuntimeException("Updated user must have an ID");
         }
 
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(userService.update(userDTO)));
