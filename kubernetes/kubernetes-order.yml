@@ -25,6 +25,7 @@ spec:
       labels:
         app: order
     spec:
+      serviceAccountName: spring-cloud-kubernetes-configuration-watcher
       containers:
         - name: order
           image: docker.maxilog.tech/poc/spring/order:1.0.0
@@ -33,15 +34,15 @@ spec:
           imagePullPolicy: Always
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: prod
-            - name: SPRING_CLOUD_CONSUL_HOST
-              value: consul-consul-server
-            - name: SPRING_CLOUD_CONSUL_PORT
-              value: '8500'
-            - name: SPRING_CLOUD_CONSUL_DISCOVERY_HOSTNAME
-              value: order
-            - name: SPRING_CLOUD_CONSUL_DISCOVERY_PORT
-              value: '80'
+              value: prod, kubernetes
+#            - name: SPRING_CLOUD_CONSUL_HOST
+#              value: consul-consul-server
+#            - name: SPRING_CLOUD_CONSUL_PORT
+#              value: '8500'
+#            - name: SPRING_CLOUD_CONSUL_DISCOVERY_HOSTNAME
+#              value: order
+#            - name: SPRING_CLOUD_CONSUL_DISCOVERY_PORT
+#              value: '80'
             - name: KEYCLOAK_URL
               value: https://auth.maxilog.tech
             - name: KEYCLOAK_REALM

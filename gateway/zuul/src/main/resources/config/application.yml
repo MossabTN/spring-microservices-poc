@@ -24,17 +24,6 @@ spring:
     name: gateway
   profiles:
     active: dev
-  cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        healthCheckPath: /management/health
-        instanceId: gateway:${spring.application.instance-id:${random.value}}
-        service-name: gateway
-      config:
-        watch:
-          enabled: false
   security:
     oauth2:
       client:
@@ -46,10 +35,6 @@ spring:
             authorization-grant-type: client_credentials
             client-id: back
             client-secret: back
-
-keycloak:
-  url: http://localhost:8180
-  realm: local
 
 management:
   endpoints:

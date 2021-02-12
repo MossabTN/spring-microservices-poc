@@ -11,16 +11,6 @@ spring:
       avro:
         #schema-locations: classpath:avro/notification.avsc
         dynamic-schema-generation-enabled: true
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        healthCheckPath: /management/health
-        instanceId: notification:${spring.application.instance-id:${random.value}}
-        service-name: notification
-      config:
-        watch:
-          enabled: true
     stream:
       default:
         producer:

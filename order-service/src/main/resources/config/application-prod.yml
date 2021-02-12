@@ -2,16 +2,6 @@ spring:
   profiles:
     active: prod
   cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        healthCheckPath: /management/health
-        instanceId: order:${spring.application.instance-id:${random.value}}
-        service-name: order
-      config:
-        watch:
-          enabled: true
     schema-registry-client:
       endpoint: http://localhost:8881
   datasource:
@@ -24,7 +14,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-
 keycloak:
   url: http://keycloak:8080
   realm: local

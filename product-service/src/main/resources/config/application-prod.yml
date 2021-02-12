@@ -1,18 +1,7 @@
 spring:
   profiles:
     active: prod
-
   cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        healthCheckPath: /management/health
-        instanceId: product:${spring.application.instance-id:${random.value}}
-        service-name: product
-      config:
-        watch:
-          enabled: true
     schema-registry-client:
       endpoint: http://localhost:8881
   datasource:
@@ -22,9 +11,9 @@ spring:
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5
-    jpa:
-      hibernate:
-        ddl-auto: update
+  jpa:
+    hibernate:
+      ddl-auto: update
 keycloak:
   url: http://keycloak:8080
   realm: local

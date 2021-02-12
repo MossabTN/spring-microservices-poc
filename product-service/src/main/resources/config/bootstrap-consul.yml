@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: #spring.profiles.active#
+  cloud:
+    kubernetes:
+      discovery:
+        enabled: false
+      config:
+        enabled: false
+      enabled: false
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        healthCheckPath: /management/health
+        instanceId: customer:${spring.application.instance-id:${random.value}}
+        service-name: customer
+        tags:
+          - profile=${spring.profiles.active}
+      config:
+        watch:
+          enabled: true
+        fail-fast: false
+        format: yaml
+        profile-separator: '-'
+      retry:
+        initial-interval: 1000
+        max-interval: 2000
+        max-attempts: 100

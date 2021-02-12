@@ -1,6 +1,5 @@
 server:
   port: 8083
-
 spring:
   application:
     name: product
@@ -11,16 +10,6 @@ spring:
       avro:
         #schema-locations: classpath:avro/notification.avsc
         dynamic-schema-generation-enabled: true
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        healthCheckPath: /management/health
-        instanceId: product:${spring.application.instance-id:${random.value}}
-        service-name: product
-      config:
-        watch:
-          enabled: true
     stream:
       default:
         producer:
@@ -55,7 +44,6 @@ spring:
             authorization-grant-type: client_credentials
             client-id: back
             client-secret: back
-
 management:
   endpoints:
     web:
@@ -96,7 +84,6 @@ management:
         request:
           autotime:
             enabled: true
-
 opentracing:
   jaeger:
     service-name: ${spring.application.name}
@@ -104,7 +91,6 @@ opentracing:
     udp-sender:
       host: localhost
       port: 6831
-
 security:
   oauth2:
     authorization:
