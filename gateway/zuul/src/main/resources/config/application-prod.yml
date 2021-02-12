@@ -1,7 +1,10 @@
 spring:
   profiles:
     active: prod
-
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
 keycloak:
   url: http://keycloak:8080
   realm: local
