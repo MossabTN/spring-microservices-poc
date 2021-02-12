@@ -10,20 +10,18 @@ import org.springframework.cloud.netflix.ribbon.StaticServerList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
 public class RibbonConfiguration {
 
-    @Autowired
-    private DiscoveryClient discoveryClient;
-
-    private String serviceId = "client";
     protected static final String VALUE_NOT_SET = "__not__set__";
     protected static final String DEFAULT_NAMESPACE = "ribbon";
+    @Autowired
+    private DiscoveryClient discoveryClient;
+    private String serviceId = "client";
 
-    public RibbonConfiguration () {
+    public RibbonConfiguration() {
     }
 
-    public RibbonConfiguration (String serviceId) {
+    public RibbonConfiguration(String serviceId) {
         this.serviceId = serviceId;
     }
 
