@@ -5,11 +5,7 @@ spring:
     kubernetes:
       discovery:
         all-namespaces: false
-      config:
-        namespace: poc-spring
-        sources:
-          - name: ${spring.application.name}-config
-      reload:
-        enabled: false
+      secrets:
+        enable-api: true
     consul:
       enabled: false

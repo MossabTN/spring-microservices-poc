@@ -4,7 +4,7 @@ spring:
   cloud:
     kubernetes:
       discovery:
-        all-namespaces: true
+        all-namespaces: false
       secrets:
         enable-api: true
     consul:
