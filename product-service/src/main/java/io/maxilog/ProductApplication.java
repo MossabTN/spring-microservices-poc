@@ -5,13 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.schema.registry.client.EnableSchemaRegistryClient;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
 
 @EnableDiscoveryClient
-@EnableSchemaRegistryClient
 @SpringBootApplication
 public class ProductApplication {
 
@@ -23,12 +21,12 @@ public class ProductApplication {
         this.env = env;
     }
 
-    @PostConstruct
-    public void initApplication() {
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(ProductApplication.class, args);
+    }
+
+    @PostConstruct
+    public void initApplication() {
     }
 
 }
