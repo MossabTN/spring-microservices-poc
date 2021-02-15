@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "products")
-@Cacheable
+//@Cacheable
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,7 +42,8 @@ public class Product implements Serializable {
     @ManyToOne()
     private Category category;
 
-    public Product() { }
+    public Product() {
+    }
 
     public Product(String name, String description, BigDecimal price,
                    Integer quantity, ProductStatus status, Category category) {

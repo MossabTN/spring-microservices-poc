@@ -8,7 +8,6 @@ spring:
   cloud:
     schema:
       avro:
-        #schema-locations: classpath:avro/notification.avsc
         dynamic-schema-generation-enabled: true
     stream:
       default:
