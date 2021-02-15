@@ -1,6 +1,5 @@
 package io.maxilog.service.impl;
 
-import io.maxilog.config.kafka.ProductMessaging;
 import io.maxilog.domain.Product;
 import io.maxilog.domain.UserHolder;
 import io.maxilog.order.OrderAvro;
@@ -26,14 +25,12 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final ProductMessaging productMessaging;
     private final UserHolder userHolder;
 
     public ProductServiceImpl(ProductRepository productRepository,
-                              ProductMapper productMapper, ProductMessaging productMessaging, UserHolder userHolder) {
+                              ProductMapper productMapper, UserHolder userHolder) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
-        this.productMessaging = productMessaging;
         this.userHolder = userHolder;
     }
 
