@@ -1,0 +1,14 @@
+{{- if .Values.gateway.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-gateway
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: {{ .Values.gateway.service.type }}
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: gateway
+{{- end -}}

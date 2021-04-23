@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-customer
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.customer.replicaCount }}
+  selector:
+    matchLabels:
+      app: customer
+  template:
+    metadata:
+      labels:
+        app: customer
+    spec:
+      containers:
+        - name: customer
+          image: "{{ .Values.customer.image.repository }}:{{ .Values.customer.image.tag }}"
+          ports:
+            - containerPort: 8081
+          imagePullPolicy: {{ .Values.customer.image.pullPolicy }}
+          env:
+            {{ include "poc-spring.consulEnvirementConfig" . | nindent 12 }}
+            - name: KEYCLOAK_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOAK_URL
+            - name: KEYCLOAK_REALM
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOAK_REALM
+            - name: LOGSTASH_ENABLED
+              value: {{- .Values.customer.logstash.enabled -}}
+            - name: LOGSTASH_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: logstash-config
+                  key: LOGSTASH_HOST
+            - name: LOGSTASH_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: logstash-config
+                  key: LOGSTASH_PORT

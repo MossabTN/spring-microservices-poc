@@ -27,7 +27,7 @@ helm install kafka confluentinc/cp-helm-charts -f values/kafka.yml -n poc-spring
 
 ##### install poc-spring
 ```bash
-kubectl apply -f ./ -n poc-spring
+kubectl apply -f ./manifest/ -n poc-spring
 ```
 
 ##### install elk

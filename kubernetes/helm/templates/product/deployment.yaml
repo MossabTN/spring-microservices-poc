@@ -1,22 +1,11 @@
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: product
-spec:
-  type: ClusterIP
-  ports:
-    - port: 80
-      targetPort: 8083
-  selector:
-    app: product
----
+{{- if .Values.product.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: product
+  name: {{ .Release.Name }}-product
+  namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.product.replicaCount }}
   selector:
     matchLabels:
       app: product
@@ -25,7 +14,6 @@ spec:
       labels:
         app: product
     spec:
-      serviceAccountName: spring-cloud-kubernetes-configuration-watcher
       containers:
         - name: product
           image: docker.maxilog.tech/poc/spring/product:1.0.0
@@ -33,20 +21,23 @@ spec:
             - containerPort: 8083
           imagePullPolicy: Always
           env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: prod, kubernetes
-#            - name: SPRING_CLOUD_CONSUL_HOST
-#              value: consul-consul-server
-#            - name: SPRING_CLOUD_CONSUL_PORT
-#              value: '8500'
-#            - name: SPRING_CLOUD_CONSUL_DISCOVERY_HOSTNAME
-#              value: product
-#            - name: SPRING_CLOUD_CONSUL_DISCOVERY_PORT
-#              value: '80'
+            {{ include "poc-spring.consulEnvirementConfig" . | nindent 12 }}
             - name: KEYCLOAK_URL
               value: https://auth.maxilog.tech
             - name: KEYCLOAK_REALM
               value: poc
+            - name: LOGSTASH_ENABLED
+              value: {{- .Values.product.logstash.enabled -}}
+            - name: LOGSTASH_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: logstash-config
+                  key: LOGSTASH_HOST
+            - name: LOGSTASH_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: logstash-config
+                  key: LOGSTASH_PORT
             - name: SPRING_DATASOURCE_DB
               value: product
             - name: SPRING_DATASOURCE_USERNAME
@@ -59,9 +50,4 @@ spec:
               value: http://kafka-cp-schema-registry:8081
             - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
               value: kafka-cp-kafka:9092
-            - name: LOGSTASH_ENABLED
-              value: 'true'
-            - name: LOGSTASH_HOST
-              value: elk-logstash.elk
-            - name: LOGSTASH_PORT
-              value: '1514'
+{{- end -}}

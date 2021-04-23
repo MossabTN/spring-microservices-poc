@@ -1,0 +1,10 @@
+{{- if .Values.consul.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-consul-config
+  namespace: {{ .Release.Namespace }}
+data:
+  SPRING_CLOUD_CONSUL_HOST: consul-consul-server
+  SPRING_CLOUD_CONSUL_PORT: "8500"
+{{- end }}

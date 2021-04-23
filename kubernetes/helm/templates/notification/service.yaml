@@ -1,0 +1,14 @@
+{{- if .Values.notification.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-notification
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: {{ .Values.notification.service.type }}
+  ports:
+    - port: 80
+      targetPort: 8082
+  selector:
+    app: notification
+{{- end -}}
