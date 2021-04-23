@@ -75,11 +75,8 @@ product:
   logstash:
     enabled: false
 
-consul:
-  enabled: false
-
 ingress:
-  enabled: false
+  enabled: true
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -88,43 +85,104 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  hosts:
-    - host: chart-example.local
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  host: poc-spring.maxilog.tech
 
+keycloak:
+  url: https://auth.maxilog.tech
+  realm: poc
 
+postgresql:
+  initdbScriptsSecret: init-postgres
 
+mongodb:
+  auth:
+    database: notification
+    username: maxilog-notification-user
+    password: maxilog-notific
 
+cp-helm-charts:
+  cp-kafka-connect:
+    enabled: false
+  cp-ksql-server:
+    enabled: false
+  cp-control-center:
+    enabled: false
+  cp-schema-registry:
+    servers: 1
+    prometheus:
+      jmx:
+        enabled: false
+  cp-kafka-rest:
+    prometheus:
+      jmx:
+        enabled: false
+  cp-zookeeper:
+    servers: 1
+    prometheus:
+      jmx:
+        enabled: false
+  cp-kafka:
+    brokers: 3
+    prometheus:
+      jmx:
+        enabled: false
 
-
-
-
-
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-autoscaling:
+consul:
   enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  ui:
+    enabled: true
 
-nodeSelector: {}
+elastic-stack:
+  enabled: false
+  elasticsearch:
+    client:
+      replicas: 1
+    master:
+      replicas: 2
+    data:
+      replicas: 1
+  logstash:
+    elasticsearch:
+      host: elk-elasticsearch-client
+    service:
+      ports:
+        syslog-tcp:
+          port: 1514
+          targetPort: syslog-tcp
+          protocol: TCP
+    ports:
+      - name: syslog-tcp
+        containerPort: 1514
+        protocol: TCP
+    inputs:
+      main: |-
+        input {
+          tcp {
+              port => 1514
+              type => syslog
+              codec => json_lines
+          }
+        }
 
-tolerations: []
-
-affinity: {}
+  kibana:
+    enabled: true
+    image:
+      tag: "6.8.6"
+    env:
+      ELASTICSEARCH_HOSTS: http://elk-elasticsearch-client:9200
+    files:
+      kibana.yml:
+        elasticsearch.hosts: http://elk-elasticsearch-client:9200
+    ingress:
+      enabled: true
+      hosts:
+        - "kibana.maxilog.tech"
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      tls:
+        - hosts:
+            - kibana.maxilog.tech
+          secretName: kibana.maxilog.tech-tls

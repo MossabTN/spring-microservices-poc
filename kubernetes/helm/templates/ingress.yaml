@@ -1,50 +1,49 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "poc-spring.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+  {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
-{{- else -}}
+  {{- else -}}
 apiVersion: extensions/v1beta1
-{{- end }}
+  {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ .Release.Name }}-ingress
+  namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "poc-spring.labels" . | nindent 4 }}
+  {{- include "poc-spring.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   {{- if .Values.ingress.tls }}
   tls:
     - hosts:
-        - poc-spring.maxilog.tech
-      secretName: poc-spring-secret-tls
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Release.Name }}-secret-tls
   {{- end }}
   rules:
-    - host: poc-spring.maxilog.tech
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
           - path: /websocket/(.*)
             pathType: Prefix
             backend:
               service:
-                name: notification
+                name: {{ .Release.Name }}-notification
                 port:
                   number: 80
           - path: /api/(.*)
             pathType: Prefix
             backend:
               service:
-                name: gateway
+                name: {{ .Release.Name }}-gateway
                 port:
                   number: 80
           - path: /(.*)
             pathType: Prefix
             backend:
               service:
-                name: front
+                name: {{ .Release.Name }}-front
                 port:
                   number: 80
 {{- end }}

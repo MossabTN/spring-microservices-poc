@@ -4,5 +4,5 @@ metadata:
   name: {{ .Release.Name }}-keycloak-config
   namespace: {{ .Release.Namespace }}
 data:
-  KEYCLOAK_URL: https://auth.maxilog.tech
-  KEYCLOAK_REALM: poc
+  KEYCLOAK_URL: {{ .Values.keycloak.url}}
+  KEYCLOAK_REALM: {{ .Values.keycloak.realm}}

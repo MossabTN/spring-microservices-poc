@@ -8,10 +8,12 @@ spec:
   selector:
     matchLabels:
       app: customer
+      {{- include "poc-spring.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         app: customer
+        {{- include "poc-spring.labels" . | nindent 8 }}
     spec:
       containers:
         - name: customer
@@ -32,7 +34,7 @@ spec:
                   name: keycloak-config
                   key: KEYCLOAK_REALM
             - name: LOGSTASH_ENABLED
-              value: {{- .Values.customer.logstash.enabled -}}
+              value: {{ .Values.customer.logstash.enabled | quote}}
             - name: LOGSTASH_HOST
               valueFrom:
                 configMapKeyRef:
