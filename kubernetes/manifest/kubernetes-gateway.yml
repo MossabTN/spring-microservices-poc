@@ -55,25 +55,25 @@ spec:
 #              value: customer
 #            - name: SPRING_CLOUD_CONSUL_DISCOVERY_PORT
 #              value: '80'
-           - name: KEYCLOAK_URL
-             valueFrom:
-               configMapKeyRef:
-                 name: keycloak-config
-                 key: KEYCLOAK_URL
-           - name: KEYCLOAK_REALM
-             valueFrom:
-               configMapKeyRef:
-                 name: keycloak-config
-                 key: KEYCLOAK_REALM
-           - name: LOGSTASH_ENABLED
-             value: 'true'
-           - name: LOGSTASH_HOST
-             valueFrom:
-               configMapKeyRef:
-                 name: logstash-config
-                 key: LOGSTASH_HOST
-           - name: LOGSTASH_PORT
-             valueFrom:
-               configMapKeyRef:
-                 name: logstash-config
-                 key: LOGSTASH_PORT
+            - name: KEYCLOAK_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOAK_URL
+            - name: KEYCLOAK_REALM
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOAK_REALM
+            - name: LOGSTASH_ENABLED
+              value: 'true'
+            - name: LOGSTASH_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: logstash-config
+                  key: LOGSTASH_HOST
+            - name: LOGSTASH_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: logstash-config
+                  key: LOGSTASH_PORT
