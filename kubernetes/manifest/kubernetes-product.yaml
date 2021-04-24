@@ -2,38 +2,38 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: gateway
+  name: product
 spec:
   type: ClusterIP
   ports:
     - port: 80
-      targetPort: 8080
+      targetPort: 8083
   selector:
-    app: gateway
+    app: product
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway
+  name: product
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: gateway
+      app: product
   template:
     metadata:
       labels:
-        app: gateway
+        app: product
     spec:
       serviceAccountName: spring-cloud-kubernetes-configuration-watcher
       containers:
-        - name: gateway
-          image: docker.maxilog.tech/poc/spring/gateway:1.0.0
+        - name: product
+          image: docker.maxilog.tech/poc/spring/product:1.0.0
           ports:
-            - containerPort: 8080
+            - containerPort: 8083
           imagePullPolicy: Always
           livenessProbe:
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
             periodSeconds: 5
             httpGet:
               path: /management/health
@@ -65,6 +65,18 @@ spec:
                 configMapKeyRef:
                   name: keycloak-config
                   key: KEYCLOAK_REALM
+            - name: SPRING_DATASOURCE_DB
+              value: product
+            - name: SPRING_DATASOURCE_USERNAME
+              value: maxilog-product-user
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: maxilog-product-password
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgresql:5432/$(SPRING_DATASOURCE_DB)
+            - name: SPRING_CLOUD_SCHEMA_REGISTRY_CLIENT_ENDPOINT
+              value: http://kafka-cp-schema-registry:8081
+            - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
+              value: kafka-cp-kafka:9092
             - name: LOGSTASH_ENABLED
               value: 'true'
             - name: LOGSTASH_HOST

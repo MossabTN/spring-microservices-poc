@@ -76,7 +76,7 @@ product:
     enabled: false
 
 ingress:
-  enabled: true
+  tls: true
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -130,6 +130,10 @@ cp-helm-charts:
 
 consul:
   enabled: false
+  ingress:
+    enabled: true
+    tls: true
+    host: consul.maxilog.tech
   ui:
     enabled: true
 

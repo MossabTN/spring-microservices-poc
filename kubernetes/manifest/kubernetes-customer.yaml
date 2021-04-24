@@ -2,36 +2,42 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: product
+  name: customer
 spec:
   type: ClusterIP
   ports:
     - port: 80
-      targetPort: 8083
+      targetPort: 8081
   selector:
-    app: product
+    app: customer
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: product
+  name: customer
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: product
+      app: customer
   template:
     metadata:
       labels:
-        app: product
+        app: customer
     spec:
       serviceAccountName: spring-cloud-kubernetes-configuration-watcher
       containers:
-        - name: product
-          image: docker.maxilog.tech/poc/spring/product:1.0.0
+        - name: customer
+          image: docker.maxilog.tech/poc/spring/customer:1.0.0
           ports:
-            - containerPort: 8083
+            - containerPort: 8081
           imagePullPolicy: Always
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            httpGet:
+              path: /management/health
+              port: 8080
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod, kubernetes
@@ -59,18 +65,6 @@ spec:
                 configMapKeyRef:
                   name: keycloak-config
                   key: KEYCLOAK_REALM
-            - name: SPRING_DATASOURCE_DB
-              value: product
-            - name: SPRING_DATASOURCE_USERNAME
-              value: maxilog-product-user
-            - name: SPRING_DATASOURCE_PASSWORD
-              value: maxilog-product-password
-            - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgresql:5432/$(SPRING_DATASOURCE_DB)
-            - name: SPRING_CLOUD_SCHEMA_REGISTRY_CLIENT_ENDPOINT
-              value: http://kafka-cp-schema-registry:8081
-            - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
-              value: kafka-cp-kafka:9092
             - name: LOGSTASH_ENABLED
               value: 'true'
             - name: LOGSTASH_HOST

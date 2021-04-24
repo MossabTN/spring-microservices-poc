@@ -32,6 +32,12 @@ spec:
           ports:
             - containerPort: 8082
           imagePullPolicy: Always
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            httpGet:
+              path: /management/health
+              port: 8080
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod, kubernetes

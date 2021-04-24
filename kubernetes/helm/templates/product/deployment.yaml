@@ -21,6 +21,12 @@ spec:
           ports:
             - containerPort: 8083
           imagePullPolicy: Always
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            httpGet:
+              path: /management/health
+              port: 8080
           env:
             {{ include "poc-spring.consulEnvirementConfig" . | nindent 12 }}
             - name: KEYCLOAK_URL
