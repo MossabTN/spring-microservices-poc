@@ -15,6 +15,7 @@ spec:
         app: customer
         {{- include "poc-spring.labels" . | nindent 8 }}
     spec:
+      serviceAccountName: spring-cloud-kubernetes-configuration-watcher
       containers:
         - name: customer
           image: "{{ .Values.customer.image.repository }}:{{ .Values.customer.image.tag }}"

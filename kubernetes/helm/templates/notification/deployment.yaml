@@ -14,6 +14,7 @@ spec:
       labels:
         app: notification
     spec:
+      serviceAccountName: spring-cloud-kubernetes-configuration-watcher
       containers:
         - name: notification
           image: docker.maxilog.tech/poc/spring/notification:1.0.0

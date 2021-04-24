@@ -14,6 +14,7 @@ spec:
       labels:
         app: product
     spec:
+      serviceAccountName: spring-cloud-kubernetes-configuration-watcher
       containers:
         - name: product
           image: docker.maxilog.tech/poc/spring/product:1.0.0
