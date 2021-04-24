@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-keycloak-config
+  name: keycloak-config
   namespace: {{ .Release.Namespace }}
 data:
   KEYCLOAK_URL: {{ .Values.keycloak.url}}
