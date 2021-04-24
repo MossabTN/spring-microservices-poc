@@ -33,7 +33,7 @@ spec:
             - containerPort: 8083
           imagePullPolicy: Always
           livenessProbe:
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 5
             httpGet:
               path: /management/health

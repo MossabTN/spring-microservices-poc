@@ -23,7 +23,7 @@ spec:
             - containerPort: 8081
           imagePullPolicy: {{ .Values.customer.image.pullPolicy }}
           livenessProbe:
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 5
             httpGet:
               path: /management/health

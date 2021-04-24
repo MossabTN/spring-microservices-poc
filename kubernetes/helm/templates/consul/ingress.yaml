@@ -1,4 +1,4 @@
-{{if .Values.consul.enabled and .Values.consul.ingress.enabled }}
+{{ if  and .Values.consul.enabled .Values.consul.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
