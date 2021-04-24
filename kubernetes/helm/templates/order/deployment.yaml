@@ -45,9 +45,9 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               value: maxilog-order-password
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgresql:5432/$(SPRING_DATASOURCE_DB)
+              value: jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/$(SPRING_DATASOURCE_DB)
             - name: SPRING_CLOUD_SCHEMA_REGISTRY_CLIENT_ENDPOINT
-              value: http://kafka-cp-schema-registry:8081
+              value: http://{{ .Release.Name }}-cp-schema-registry:8081
             - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
-              value: kafka-cp-kafka:9092
+              value: {{ .Release.Name }}-cp-kafka:9092
 {{- end -}}

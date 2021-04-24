@@ -45,9 +45,9 @@ spec:
             - name: SPRING_DATA_MONGODB_PASSWORD
               value: maxilog-notification-password
             - name: SPRING_DATA_MONGODB_URI
-              value: mongodb://mongodb:27017/$(SPRING_DATA_MONGODB_DB)
+              value: mongodb://{{ .Release.Name }}-mongodb:27017/$(SPRING_DATA_MONGODB_DB)
             - name: SPRING_CLOUD_SCHEMA_REGISTRY_CLIENT_ENDPOINT
-              value: http://kafka-cp-schema-registry:8081
+              value: http://{{ .Release.Name }}-cp-schema-registry:8081
             - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
-              value: kafka-cp-kafka:9092
+              value: {{ .Release.Name }}-cp-kafka:9092
 {{- end -}}
