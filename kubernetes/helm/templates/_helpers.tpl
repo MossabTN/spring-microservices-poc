@@ -84,3 +84,13 @@ Create the name of the service account to use
   value: prod, kubernetes
 {{- end -}}
 {{- end -}}
+
+{{- define "poc-spring.keycloak.url" -}}
+{{- if .Values.keycloak.ingress.enabled }}
+{{ with index .Values.keycloak.ingress.rules 0 }}
+http{{ if $.Values.keycloak.ingress.tls }}s{{ end }}://{{ index .paths 0 }}/
+{{- end }}
+{{ else }}
+{{ .Values.keycloak.url }}
+{{- end }}
+{{- end }}
