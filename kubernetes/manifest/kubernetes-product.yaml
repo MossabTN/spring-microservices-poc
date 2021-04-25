@@ -37,7 +37,7 @@ spec:
             periodSeconds: 5
             httpGet:
               path: /management/health
-              port: 8080
+              port: 8083
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod, kubernetes
