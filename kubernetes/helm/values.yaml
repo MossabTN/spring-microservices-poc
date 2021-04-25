@@ -89,9 +89,6 @@ ingress:
 
 keycloak:
   enabled: true
-#  postgresql:
-#    fullnameOverride: keycloak-postgresql
-#    nameOverride: keycloak-postgresql
   extraVolumes: |
     - name: init-realm
       secret:
@@ -130,6 +127,8 @@ keycloak:
   realm: poc
 
 postgresql:
+  fullnameOverride: database-postgresql
+  nameOverride: database-postgresql
   initdbScriptsSecret: init-postgres
 
 mongodb:
