@@ -89,11 +89,9 @@ ingress:
 
 keycloak:
   enabled: true
-  auth:
-    adminUser: admin
-    adminPassword: admin4admin
-  service:
-    type: ClusterIP
+#  postgresql:
+#    fullnameOverride: keycloak-postgresql
+#    nameOverride: keycloak-postgresql
   extraVolumes: |
     - name: init-realm
       secret:
@@ -103,21 +101,30 @@ keycloak:
       mountPath: "/realm/"
       readOnly: true
   extraEnv: |
+    - name: PROXY_ADDRESS_FORWARDING
+      value: "true"
+    - name: KEYCLOAK_USER
+      value: admin
+    - name: KEYCLOAK_PASSWORD
+      value: admin
     - name: KEYCLOAK_IMPORT
       value: /realm/realm.json
   ingress:
     enabled: true
-    apiVersion: networking.k8s.io/v1
-    path: /
-    pathType: Prefix
-    hostname: keycloak.maxilog.tech
-    tls: true
-    annotations: |
+    tls:
+      - hosts:
+          - keycloak.maxilog.tech
+        secretName: keycloak.maxilog.tech-tls
+    rules:
+      - host: keycloak.maxilog.tech
+        paths:
+          - /
+    annotations:
       {
-       nginx.ingress.kubernetes.io/rewrite-target: "/",
-       nginx.ingress.kubernetes.io/ssl-redirect: "false",
-       kubernetes.io/ingress.class: "nginx",
-       cert-manager.io/cluster-issuer: "letsencrypt-prod"
+        nginx.ingress.kubernetes.io/rewrite-target: "/",
+        nginx.ingress.kubernetes.io/ssl-redirect: "false",
+        kubernetes.io/ingress.class: "nginx",
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
       }
   url: https://auth.maxilog.tech
   realm: poc
