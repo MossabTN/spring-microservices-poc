@@ -2,7 +2,7 @@ import { KeycloakConfig } from 'keycloak-angular';
 
 // Add here your keycloak setup infos
 let keycloakConfig: KeycloakConfig = {
-  url: 'https://auth.maxilog.tech/auth',
+  url: 'https://keycloak.maxilog.tech/auth',
   realm: 'poc',
   clientId: 'front'
 };

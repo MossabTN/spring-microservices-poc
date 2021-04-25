@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: keycloak-config
 data:
-  KEYCLOAK_URL: https://auth.maxilog.tech
+  KEYCLOAK_URL: https://keycloak.maxilog.tech
   KEYCLOAK_REALM: poc
