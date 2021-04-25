@@ -14,7 +14,7 @@ spec:
   tls:
     - hosts:
         - {{ .Values.ingress.host }}
-      secretName: {{ .Release.Name }}-secret-tls
+      secretName: {{ .Release.Name }}-poc-spring-secret-tls
   {{- end }}
   rules:
     - host: {{ .Values.ingress.host }}
