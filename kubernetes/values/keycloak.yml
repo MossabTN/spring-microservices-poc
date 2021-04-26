@@ -1,0 +1,34 @@
+extraVolumes: |
+  - name: init-realm
+    secret:
+      secretName: init-realm
+extraVolumeMounts: |
+  - name: init-realm
+    mountPath: "/realm/"
+    readOnly: true
+extraEnv: |
+  - name: PROXY_ADDRESS_FORWARDING
+    value: "true"
+  - name: KEYCLOAK_USER
+    value: admin
+  - name: KEYCLOAK_PASSWORD
+    value: admin
+  - name: KEYCLOAK_IMPORT
+    value: /realm/realm.json
+ingress:
+  enabled: true
+  tls:
+    - hosts:
+        - keycloak.maxilog.tech
+      secretName: keycloak.maxilog.tech-tls
+  rules:
+    - host: keycloak.maxilog.tech
+      paths:
+        - /
+  annotations:
+    {
+      nginx.ingress.kubernetes.io/rewrite-target: "/",
+      nginx.ingress.kubernetes.io/ssl-redirect: "false",
+      kubernetes.io/ingress.class: "nginx",
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    }

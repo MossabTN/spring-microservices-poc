@@ -32,21 +32,39 @@ spec:
           ports:
             - containerPort: 8083
           imagePullPolicy: Always
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            httpGet:
+              path: /management/health
+              port: 8083
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod, kubernetes
 #            - name: SPRING_CLOUD_CONSUL_HOST
-#              value: consul-consul-server
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: consul-config
+#                  key: SPRING_CLOUD_CONSUL_HOST
 #            - name: SPRING_CLOUD_CONSUL_PORT
-#              value: '8500'
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: consul-config
+#                  key: SPRING_CLOUD_CONSUL_PORT
 #            - name: SPRING_CLOUD_CONSUL_DISCOVERY_HOSTNAME
-#              value: product
+#              value: customer
 #            - name: SPRING_CLOUD_CONSUL_DISCOVERY_PORT
 #              value: '80'
             - name: KEYCLOAK_URL
-              value: https://auth.maxilog.tech
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOAK_URL
             - name: KEYCLOAK_REALM
-              value: poc
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOAK_REALM
             - name: SPRING_DATASOURCE_DB
               value: product
             - name: SPRING_DATASOURCE_USERNAME
@@ -62,6 +80,12 @@ spec:
             - name: LOGSTASH_ENABLED
               value: 'true'
             - name: LOGSTASH_HOST
-              value: elk-logstash.elk
+              valueFrom:
+                configMapKeyRef:
+                  name: logstash-config
+                  key: LOGSTASH_HOST
             - name: LOGSTASH_PORT
-              value: '1514'
+              valueFrom:
+                configMapKeyRef:
+                  name: logstash-config
+                  key: LOGSTASH_PORT

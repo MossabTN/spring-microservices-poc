@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: spring-microservices-poc
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/MossabTN/spring-microservices-poc'
+    path: kubernetes/helm
+    targetRevision: helm
+    helm:
+      parameters:
+        - name: 'keycloak.ingress.tls[0].hosts[0]'
+          value: kt.maxilog.tech
+        - name: 'keycloak.ingress.tls[0].secretName'
+          value: keycloak.maxilog.tech-tls
+        - name: 'keycloak.ingress.rules[0].host'
+          value: kt.maxilog.tech
+        - name: 'keycloak.ingress.rules[0].paths[0]'
+          value: /
+        - name: ingress.host
+          value: pt.maxilog.tech
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: poc-spring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

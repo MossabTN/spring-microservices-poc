@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-config
+data:
+  LOGSTASH_HOST: elk-logstash.elk
+  LOGSTASH_PORT: "1514"

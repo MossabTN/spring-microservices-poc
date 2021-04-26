@@ -1,4 +1,17 @@
+#Install Using Helm chart
+
+```bash
+helm dependency build
+helm install example ./ 
+```
+
+
+#Install Using manifest files
+
+```bash
+//create namspace
 kubectl create ns poc-spring
+```
 
 ##### install postgresql
 ```bash
@@ -11,6 +24,13 @@ helm install postgresql bitnami/postgresql -f values/postgresql.yml -n poc-sprin
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install mongodb bitnami/mongodb -f values/mongodb.yml -n poc-spring --version 10.5.0
+```
+
+##### install keycloak
+```bash
+kubectl apply -f ./manifest/kubernetes-keycloak-config.yaml
+helm repo add codecentric https://codecentric.github.io/helm-charts
+helm install keycloak codecentric/keycloak -f values/keycloak.yml -n poc-spring --version 10.3.0
 ```
 
 ##### install consul
@@ -27,7 +47,7 @@ helm install kafka confluentinc/cp-helm-charts -f values/kafka.yml -n poc-spring
 
 ##### install poc-spring
 ```bash
-kubectl apply -f ./ -n poc-spring
+kubectl apply -f ./manifest/ -n poc-spring
 ```
 
 ##### install elk
@@ -37,3 +57,12 @@ helm install elk helm-stable/elastic-stack -f values/elk.yml -n elk --version 2.
 ```
 
 
+#Install using ArgoCD
+### Helm as source
+```bash
+kubectl appfly -f argocd-application-helm.yaml
+```
+### Manifest files as source
+```bash
+kubectl appfly -f argocd-application-manifest.yaml
+```

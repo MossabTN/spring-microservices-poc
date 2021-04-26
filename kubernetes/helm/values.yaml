@@ -1,0 +1,231 @@
+# Default values for poc-spring.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+front:
+  image:
+    repository: docker.maxilog.tech/poc/spring/front
+    pullPolicy: Always
+    tag: "1.0.0"
+  service:
+    type: ClusterIP
+    port: 80
+
+gateway:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: docker.maxilog.tech/poc/spring/gateway
+    pullPolicy: Always
+    tag: "1.0.0"
+  service:
+    type: ClusterIP
+    port: 80
+  logstash:
+    enabled: false
+
+customer:
+  replicaCount: 1
+  image:
+    repository: docker.maxilog.tech/poc/spring/customer
+    pullPolicy: Always
+    tag: "1.0.0"
+  service:
+    type: ClusterIP
+    port: 80
+  logstash:
+    enabled: false
+
+notification:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: docker.maxilog.tech/poc/spring/notification
+    pullPolicy: Always
+    tag: "1.0.0"
+  service:
+    type: ClusterIP
+    port: 80
+  logstash:
+    enabled: false
+
+order:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: docker.maxilog.tech/poc/spring/order
+    pullPolicy: Always
+    tag: "1.0.0"
+  service:
+    type: ClusterIP
+    port: 80
+  logstash:
+    enabled: false
+
+product:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: docker.maxilog.tech/poc/spring/product
+    pullPolicy: Always
+    tag: "1.0.0"
+  service:
+    type: ClusterIP
+    port: 80
+  logstash:
+    enabled: false
+
+ingress:
+  tls: true
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  host: poc-spring.maxilog.tech
+
+keycloak:
+  # if enabled = false, you have to provide keycloak.url and keycloak.poc
+  enabled: true
+  #url: https://keycloak.maxilog.tech
+  realm: poc
+  extraVolumes: |
+    - name: init-realm
+      secret:
+        secretName: init-realm
+  extraVolumeMounts: |
+    - name: init-realm
+      mountPath: "/realm/"
+      readOnly: true
+  extraEnv: |
+    - name: PROXY_ADDRESS_FORWARDING
+      value: "true"
+    - name: KEYCLOAK_USER
+      value: admin
+    - name: KEYCLOAK_PASSWORD
+      value: admin
+    - name: KEYCLOAK_IMPORT
+      value: /realm/realm.json
+  ingress:
+    enabled: true
+    tls:
+      - hosts:
+          - keycloak.maxilog.tech
+        secretName: keycloak.maxilog.tech-tls
+    rules:
+      - host: keycloak.maxilog.tech
+        paths:
+          - /
+    annotations:
+      {
+        nginx.ingress.kubernetes.io/rewrite-target: "/",
+        nginx.ingress.kubernetes.io/ssl-redirect: "false",
+        kubernetes.io/ingress.class: "nginx",
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      }
+
+postgresql:
+  fullnameOverride: database-postgresql
+  nameOverride: database-postgresql
+  initdbScriptsSecret: init-postgres
+
+mongodb:
+  auth:
+    database: notification
+    username: maxilog-notification-user
+    password: maxilog-notific
+
+cp-helm-charts:
+  cp-kafka-connect:
+    enabled: false
+  cp-ksql-server:
+    enabled: false
+  cp-control-center:
+    enabled: false
+  cp-schema-registry:
+    servers: 1
+    prometheus:
+      jmx:
+        enabled: false
+  cp-kafka-rest:
+    enabled: false
+    prometheus:
+      jmx:
+        enabled: false
+  cp-zookeeper:
+    servers: 1
+    prometheus:
+      jmx:
+        enabled: false
+  cp-kafka:
+    brokers: 3
+    prometheus:
+      jmx:
+        enabled: false
+
+consul:
+  enabled: false
+  ingress:
+    enabled: true
+    tls: true
+    host: consul.maxilog.tech
+  ui:
+    enabled: true
+
+elastic-stack:
+  enabled: false
+  elasticsearch:
+    client:
+      replicas: 1
+    master:
+      replicas: 2
+    data:
+      replicas: 1
+  logstash:
+    elasticsearch:
+      host: elk-elasticsearch-client
+    service:
+      ports:
+        syslog-tcp:
+          port: 1514
+          targetPort: syslog-tcp
+          protocol: TCP
+    ports:
+      - name: syslog-tcp
+        containerPort: 1514
+        protocol: TCP
+    inputs:
+      main: |-
+        input {
+          tcp {
+              port => 1514
+              type => syslog
+              codec => json_lines
+          }
+        }
+
+  kibana:
+    enabled: true
+    image:
+      tag: "6.8.6"
+    env:
+      ELASTICSEARCH_HOSTS: http://elk-elasticsearch-client:9200
+    files:
+      kibana.yml:
+        elasticsearch.hosts: http://elk-elasticsearch-client:9200
+    ingress:
+      enabled: true
+      hosts:
+        - "kibana.maxilog.tech"
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        kubernetes.io/ingress.class: nginx
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      tls:
+        - hosts:
+            - kibana.maxilog.tech
+          secretName: kibana.maxilog.tech-tls

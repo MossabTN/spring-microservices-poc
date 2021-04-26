@@ -1,0 +1,14 @@
+{{- if .Values.product.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: product
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: {{ .Values.product.service.type }}
+  ports:
+    - port: 80
+      targetPort: 8083
+  selector:
+    app: product
+{{- end -}}

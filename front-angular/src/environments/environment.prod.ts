@@ -2,19 +2,19 @@ import { KeycloakConfig } from 'keycloak-angular';
 
 // Add here your keycloak setup infos
 let keycloakConfig: KeycloakConfig = {
-  url: 'https://auth.maxilog.tech/auth',
-  realm: 'poc',
+  url: 'KEYCLOAK_URL/auth',
+  realm: 'KEYCLOAK_REALM',
   clientId: 'front'
 };
 
 export const environment = {
-  production: false,
+  production: true,
   apis: {
     customer: '/api/customer',
     notification: '/api/notification',
     product: '/api/product',
     order: '/api/order',
-    websocket: 'https://poc-spring.maxilog.tech/websocket'
+    websocket: '/websocket'
   },
   keycloak: keycloakConfig
 };
