@@ -8,7 +8,7 @@ let keycloakConfig: KeycloakConfig = {
 };
 
 export const environment = {
-  production: false,
+  production: true,
   apis: {
     customer: '/api/customer',
     notification: '/api/notification',

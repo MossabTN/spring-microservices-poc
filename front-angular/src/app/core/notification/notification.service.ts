@@ -79,7 +79,6 @@ export class NotificationService {
     private connect = async () => {
         const token = await this.keycloakService.getToken();
         this.stompConfig.brokerURL = this.getBrokerURL(token);
-        console.log(this.getBrokerURL(token));
         this.stompService.stompClient.configure(this.stompConfig);
         this.stompService.stompClient.onConnect = this.onSocketConnect;
         this.stompService.stompClient.onStompError = this.onSocketError;
@@ -93,7 +92,10 @@ export class NotificationService {
     }
 
     private getHost() {
-        return window.location.protocol + "//" + window.location.host;
+        if(!isDevMode()){
+            return window.location.protocol + "//" + window.location.host;
+        }
+        return "";
     }
 
     /**
