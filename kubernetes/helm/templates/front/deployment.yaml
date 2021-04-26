@@ -19,6 +19,14 @@ spec:
           ports:
             - containerPort: 8080
           imagePullPolicy: {{ .Values.front.image.pullPolicy }}
-          envFrom:
-            - configMapRef:
-                name: keycloak-config
+          env:
+            - name: KEYCLOAK_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOAK_URL
+            - name: KEYCLOAK_REALM
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOAK_REALM

@@ -30,9 +30,15 @@ spec:
           env:
             {{ include "poc-spring.consulEnvirementConfig" . | nindent 12 }}
             - name: KEYCLOAK_URL
-              value: https://auth.maxilog.tech
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOAK_URL
             - name: KEYCLOAK_REALM
-              value: poc
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: KEYCLOAK_REALM
             - name: LOGSTASH_ENABLED
               value: {{ .Values.customer.logstash.enabled | quote}}
             - name: LOGSTASH_HOST
