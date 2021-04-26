@@ -814,14 +814,14 @@ stringData:
           "redirectUris": [
             "http://localhost:8080/*",
             "http://localhost:4200/*",
-            "http://keycloak.maxilog.tech/*",
-            "https://keycloak.maxilog.tech/*"
+            "http://poc-spring.maxilog.tech/*",
+            "https://poc-spring.maxilog.tech/*"
           ],
           "webOrigins": [
             "http://localhost:8080",
             "http://localhost:4200",
-            "http://keycloak.maxilog.tech",
-            "https://keycloak.maxilog.tech"
+            "http://poc-spring.maxilog.tech",
+            "https://poc-spring.maxilog.tech"
           ],
           "notBefore": 0,
           "bearerOnly": false,
