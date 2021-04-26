@@ -2,7 +2,7 @@ import { KeycloakConfig } from 'keycloak-angular';
 
 // Add here your keycloak setup infos
 let keycloakConfig: KeycloakConfig = {
-  url: 'KEYCLOAK_URL',
+  url: 'KEYCLOAK_URL/auth',
   realm: 'KEYCLOAK_REALM',
   clientId: 'front'
 };
