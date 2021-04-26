@@ -19,3 +19,6 @@ spec:
           ports:
             - containerPort: 8080
           imagePullPolicy: {{ .Values.front.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: keycloak-config
