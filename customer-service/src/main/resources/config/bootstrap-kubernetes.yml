@@ -5,6 +5,7 @@ spring:
     kubernetes:
       discovery:
         all-namespaces: false
+        service-name: customer
       secrets:
         enable-api: true
     consul:
