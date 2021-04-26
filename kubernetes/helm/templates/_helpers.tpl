@@ -88,7 +88,7 @@ Create the name of the service account to use
 {{- define "poc-spring.keycloak.url" -}}
 {{- if .Values.keycloak.ingress.enabled -}}
 {{- with index .Values.keycloak.ingress.rules 0 -}}
-http{{ if $.Values.keycloak.ingress.tls }}s{{ end }}://{{ .host }}/
+http{{ if $.Values.keycloak.ingress.tls }}s{{ end }}://{{ .host }}
 {{- end -}}
 {{- else -}}
 {{- .Values.keycloak.url -}}
