@@ -60,9 +60,9 @@ helm install elk helm-stable/elastic-stack -f values/elk.yml -n elk --version 2.
 
 ##### Helm as source
 ```bash
-kubectl appfly -f argocd-application-helm.yaml
+kubectl apply -f argocd-application-helm.yaml
 ```
 ##### Manifest files as source
 ```bash
-kubectl appfly -f argocd-application-manifest.yaml
+kubectl apply -f argocd-application-manifest.yaml
 ```
