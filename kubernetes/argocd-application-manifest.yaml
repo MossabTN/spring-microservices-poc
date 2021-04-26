@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: spring-microservices-poc
+spec:
+  project: default
+  destination:
+    namespace: poc-spring
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: kubernetes
+    repoURL: 'https://github.com/MossabTN/spring-microservices-poc'
+    targetRevision: HEAD
+    directory:
+      jsonnet:
+        tlas:
+          - name: ""
+            value: ""
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
