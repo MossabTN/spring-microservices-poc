@@ -117,6 +117,8 @@ keycloak:
         secretName: keycloak.maxilog.tech-tls
     rules:
       - host: keycloak.maxilog.tech
+        paths:
+          - /
     annotations:
       {
         nginx.ingress.kubernetes.io/rewrite-target: "/",
