@@ -1,4 +1,4 @@
-#Install Using Helm chart
+# Install Using Helm chart
 
 ```bash
 helm dependency build
@@ -6,7 +6,7 @@ helm install example ./
 ```
 
 
-#Install Using manifest files
+# Install Using manifest files
 
 ```bash
 //create namspace
@@ -56,13 +56,13 @@ helm repo add helm-stable https://charts.helm.sh/stable
 helm install elk helm-stable/elastic-stack -f values/elk.yml -n elk --version 2.0.6
 ```
 
+# Install using ArgoCD
 
-#Install using ArgoCD
-### Helm as source
+##### Helm as source
 ```bash
 kubectl appfly -f argocd-application-helm.yaml
 ```
-### Manifest files as source
+##### Manifest files as source
 ```bash
 kubectl appfly -f argocd-application-manifest.yaml
 ```
