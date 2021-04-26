@@ -14,7 +14,7 @@ export const environment = {
     notification: '/api/notification',
     product: '/api/product',
     order: '/api/order',
-    websocket: 'https://poc-spring.maxilog.tech/websocket'
+    websocket: '/websocket'
   },
   keycloak: keycloakConfig
 };

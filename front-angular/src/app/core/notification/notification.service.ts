@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, isDevMode} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {KeycloakService} from "keycloak-angular";
 import * as  EventBus from 'vertx3-eventbus-client';
@@ -78,7 +78,7 @@ export class NotificationService {
      */
     private connect = async () => {
         const token = await this.keycloakService.getToken();
-        this.stompConfig.brokerURL = NotificationConfig.ws.replace('http', 'ws') + '?access_token=' + token;
+        this.stompConfig.brokerURL = this.getBrokerURL(token);
 
         this.stompService.stompClient.configure(this.stompConfig);
         this.stompService.stompClient.onConnect = this.onSocketConnect;
@@ -86,6 +86,17 @@ export class NotificationService {
         this.stompService.stompClient.onWebSocketError = this.onSocketError;
         this.stompService.stompClient.onWebSocketClose = this.onSocketError;
         this.stompService.stompClient.activate();
+    }
+
+    private getBrokerURL(token: string) {
+        return (this.getHost() + NotificationConfig.ws).replace('http', 'ws') + '?access_token=' + token;
+    }
+
+    private getHost() {
+        if(!isDevMode()){
+            return window.location.protocol + "//" + window.location.host;
+        }
+        return "";
     }
 
     /**
@@ -104,7 +115,7 @@ export class NotificationService {
         setTimeout(() => {
             this.keycloakService.getToken()
                 .then(token => {
-                    this.stompConfig.brokerURL = NotificationConfig.ws.replace('http', 'ws') + '?access_token=' + token;
+                    this.stompConfig.brokerURL = this.getBrokerURL(token);
                     this.stompService.stompClient.configure(this.stompConfig);
                     if (!this.stompService.stompClient.active) {
                         this.stompService.stompClient.activate();
