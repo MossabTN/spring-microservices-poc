@@ -24,20 +24,20 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}-notification
+                name: notification
                 port:
                   number: 80
           - path: /api/(.*)
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}-gateway
+                name: gateway
                 port:
                   number: 80
           - path: /(.*)
             pathType: Prefix
             backend:
               service:
-                name: {{ .Release.Name }}-front
+                name: front
                 port:
                   number: 80
