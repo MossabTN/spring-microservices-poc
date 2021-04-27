@@ -2,8 +2,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: poc-spring
   name: namespace-reader
+  namespace: {{ .Release.Namespace }}
 rules:
   - apiGroups: ["", "extensions", "apps"]
     resources: ["configmaps", "pods", "services", "endpoints", "secrets"]
