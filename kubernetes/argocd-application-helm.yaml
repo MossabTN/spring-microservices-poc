@@ -7,7 +7,7 @@ spec:
   source:
     repoURL: 'https://github.com/MossabTN/spring-microservices-poc'
     path: kubernetes/helm
-    targetRevision: helm
+    targetRevision: master
     helm:
       parameters:
         - name: 'keycloak.ingress.tls[0].hosts[0]'
