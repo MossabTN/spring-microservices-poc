@@ -2,7 +2,7 @@
 
 ```bash
 helm dependency build
-helm install example ./ 
+helm install example ./helm/
 ```
 
 
