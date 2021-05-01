@@ -12,12 +12,14 @@ podTemplate(
                 persistentVolumeClaim(mountPath: '/root/.m2', claimName: 'maven-repo', readOnly: false)
         ]) {
     node(label) {
-        def myRepo = checkout scm
-        def gitCommit = myRepo.GIT_COMMIT
-        def gitBranch = myRepo.GIT_BRANCH
-        def shortGitCommit = "${gitCommit[0..10]}"
-        def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
-        def version ='latest'
+        stage('Checkout') {
+            def myRepo = checkout scm
+            def gitCommit = myRepo.GIT_COMMIT
+            def gitBranch = myRepo.GIT_BRANCH
+            def shortGitCommit = "${gitCommit[0..10]}"
+            def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
+            def version = 'latest'
+        }
         dir("gateway/zuul") {
             try {
                 stage('Test') {
@@ -54,9 +56,11 @@ podTemplate(
                 }
                 stage('Create Docker images') {
                     container('docker') {
-                        sh "docker login -u jenkins -p jenkins docker.maxilog.tech"
-                        sh "docker build -t docker.maxilog.tech/poc/spring/gateway:${version} ."
-                        sh "docker push docker.maxilog.tech/poc/spring/gateway:${version}"
+                        withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
+                            sh "docker login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} docker.maxilog.tech"
+                            sh "docker build -t docker.maxilog.tech/poc/spring/gateway:${version} ."
+                            sh "docker push docker.maxilog.tech/poc/spring/gateway:${version}"
+                        }
                     }
                 }
             } catch (e) {

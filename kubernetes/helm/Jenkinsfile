@@ -17,7 +17,9 @@ podTemplate(
                         sh 'helm package .'
                     }
                     stage('Push') {
-                        sh 'curl -u jenkins:jenkins http://nexus.maxilog.tech/repository/helm/ --upload-file poc-spring-*.tgz -v'
+                        withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
+                            sh 'curl -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} http://nexus.maxilog.tech/repository/helm/ --upload-file poc-spring-*.tgz -v'
+                        }
                     }
                 } catch (e) {
                     currentBuild.result = "FAILED"

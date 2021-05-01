@@ -12,12 +12,14 @@ podTemplate(
                 hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
         ]) {
     node(label) {
-        def myRepo = checkout scm
-        def gitCommit = myRepo.GIT_COMMIT
-        def gitBranch = myRepo.GIT_BRANCH
-        def shortGitCommit = "${gitCommit[0..10]}"
-        def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
-        def version ='latest'
+        stage('Checkout') {
+            def myRepo = checkout scm
+            def gitCommit = myRepo.GIT_COMMIT
+            def gitBranch = myRepo.GIT_BRANCH
+            def shortGitCommit = "${gitCommit[0..10]}"
+            def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
+            def version = 'latest'
+        }
         dir("front-angular") {
             container('maven') {
                 version = sh script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
@@ -32,9 +34,11 @@ podTemplate(
                 }
                 stage('Create Docker images') {
                     container('docker') {
-                        sh "docker login -u jenkins -p jenkins docker.maxilog.tech"
-                        sh "docker build -t docker.maxilog.tech/poc/spring/front:${version} ."
-                        sh "docker push docker.maxilog.tech/poc/spring/front:${version}"
+                        withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
+                            sh "docker login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} docker.maxilog.tech"
+                            sh "docker build -t docker.maxilog.tech/poc/spring/front:${version} ."
+                            sh "docker push docker.maxilog.tech/poc/spring/front:${version}"
+                        }
                     }
                 }
             } catch (e) {
