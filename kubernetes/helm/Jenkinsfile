@@ -3,14 +3,18 @@ def label = "worker-${UUID.randomUUID().toString()}"
 podTemplate(
         label: label,
         containers: [
-                containerTemplate(name: 'helm', image: 'kubernautslabs/helm-kubectl', command: 'cat', doc: true)
+                containerTemplate(name: 'helm', image: 'kubernautslabs/helm-kubectl', command: 'cat', ttyEnabled: true)
         ]) {
     node(label) {
+        stage('Checkout') {
+            checkout scm
+        }
         dir("kubernetes/helm") {
             container('helm') {
                 try {
                     stage('Package') {
-                        sh 'helm package ./'
+                        sh 'helm dependency build'
+                        sh 'helm package .'
                     }
                     stage('Push') {
                         sh 'curl -u jenkins:jenkins http://nexus.maxilog.tech/repository/helm/ --upload-file poc-spring-*.tgz -v'
