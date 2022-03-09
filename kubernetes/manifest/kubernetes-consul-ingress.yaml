@@ -11,10 +11,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - consul.maxilog.tech
+        - consul.maxilog.me
       secretName: consul-secret-tls
   rules:
-    - host: consul.maxilog.tech
+    - host: consul.maxilog.me
       http:
         paths:
           - path: /

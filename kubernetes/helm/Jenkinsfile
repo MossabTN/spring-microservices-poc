@@ -18,7 +18,7 @@ podTemplate(
                     }
                     stage('Push') {
                         withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
-                            sh 'curl -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} http://nexus.maxilog.tech/repository/helm/ --upload-file poc-spring-*.tgz -v'
+                            sh 'curl -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} http://nexus.maxilog.me/repository/helm/ --upload-file poc-spring-*.tgz -v'
                         }
                     }
                 } catch (e) {

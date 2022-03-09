@@ -4,7 +4,7 @@
 
 front:
   image:
-    repository: docker.maxilog.tech/poc/spring/front
+    repository: docker.maxilog.me/poc/spring/front
     pullPolicy: Always
     tag: "1.0.0"
   service:
@@ -15,7 +15,7 @@ gateway:
   enabled: true
   replicaCount: 1
   image:
-    repository: docker.maxilog.tech/poc/spring/gateway
+    repository: docker.maxilog.me/poc/spring/gateway
     pullPolicy: Always
     tag: "1.0.0"
   service:
@@ -27,7 +27,7 @@ gateway:
 customer:
   replicaCount: 1
   image:
-    repository: docker.maxilog.tech/poc/spring/customer
+    repository: docker.maxilog.me/poc/spring/customer
     pullPolicy: Always
     tag: "1.0.0"
   service:
@@ -40,7 +40,7 @@ notification:
   enabled: true
   replicaCount: 1
   image:
-    repository: docker.maxilog.tech/poc/spring/notification
+    repository: docker.maxilog.me/poc/spring/notification
     pullPolicy: Always
     tag: "1.0.0"
   service:
@@ -53,7 +53,7 @@ order:
   enabled: true
   replicaCount: 1
   image:
-    repository: docker.maxilog.tech/poc/spring/order
+    repository: docker.maxilog.me/poc/spring/order
     pullPolicy: Always
     tag: "1.0.0"
   service:
@@ -66,7 +66,7 @@ product:
   enabled: true
   replicaCount: 1
   image:
-    repository: docker.maxilog.tech/poc/spring/product
+    repository: docker.maxilog.me/poc/spring/product
     pullPolicy: Always
     tag: "1.0.0"
   service:
@@ -85,12 +85,12 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  host: poc-spring.maxilog.tech
+  host: poc-spring.maxilog.me
 
 keycloak:
   # if enabled = false, you have to provide keycloak.url and keycloak.poc
   enabled: true
-  #url: https://keycloak.maxilog.tech
+  #url: https://keycloak.maxilog.me
   realm: poc
   extraVolumes: |
     - name: init-realm
@@ -113,10 +113,10 @@ keycloak:
     enabled: true
     tls:
       - hosts:
-          - keycloak.maxilog.tech
-        secretName: keycloak.maxilog.tech-tls
+          - keycloak.maxilog.me
+        secretName: keycloak.maxilog.me-tls
     rules:
-      - host: keycloak.maxilog.tech
+      - host: keycloak.maxilog.me
         paths:
           - /
     annotations:
@@ -171,7 +171,7 @@ consul:
   ingress:
     enabled: true
     tls: true
-    host: consul.maxilog.tech
+    host: consul.maxilog.me
   ui:
     enabled: true
 
@@ -219,7 +219,7 @@ elastic-stack:
     ingress:
       enabled: true
       hosts:
-        - "kibana.maxilog.tech"
+        - "kibana.maxilog.me"
       annotations:
         nginx.ingress.kubernetes.io/rewrite-target: /
         nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -227,5 +227,5 @@ elastic-stack:
         cert-manager.io/cluster-issuer: "letsencrypt-prod"
       tls:
         - hosts:
-            - kibana.maxilog.tech
-          secretName: kibana.maxilog.tech-tls
+            - kibana.maxilog.me
+          secretName: kibana.maxilog.me-tls

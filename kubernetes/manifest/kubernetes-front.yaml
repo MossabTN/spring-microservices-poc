@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: front
-          image: docker.maxilog.tech/poc/spring/front:1.0.0
+          image: docker.maxilog.me/poc/spring/front:1.0.0
           ports:
             - containerPort: 8080
           imagePullPolicy: Always

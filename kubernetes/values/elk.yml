@@ -40,7 +40,7 @@ kibana:
   ingress:
     enabled: true
     hosts:
-      - "kibana.maxilog.tech"
+      - "kibana.maxilog.me"
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: /
       nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -48,5 +48,5 @@ kibana:
       cert-manager.io/cluster-issuer: "letsencrypt-prod"
     tls:
       - hosts:
-          - kibana.maxilog.tech
-        secretName: kibana.maxilog.tech-tls
+          - kibana.maxilog.me
+        secretName: kibana.maxilog.me-tls

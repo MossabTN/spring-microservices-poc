@@ -38,7 +38,7 @@ podTemplate(
                 }
                 stage('SonarQube analysis') {
                     container('maven') {
-                        withSonarQubeEnv(credentialsId: 'sonarqube', installationName: 'sonarqube.maxilog.tech') {
+                        withSonarQubeEnv(credentialsId: 'sonarqube', installationName: 'sonarqube.maxilog.me') {
                             sh 'mvn sonar:sonar'
                         }
                         timeout(time: 5, unit: 'MINUTES') {
@@ -57,9 +57,9 @@ podTemplate(
                 stage('Create Docker images') {
                     container('docker') {
                         withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
-                            sh "docker login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} docker.maxilog.tech"
-                            sh "docker build -t docker.maxilog.tech/poc/spring/order:${version} ."
-                            sh "docker push docker.maxilog.tech/poc/spring/order:${version}"
+                            sh "docker login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} docker.maxilog.me"
+                            sh "docker build -t docker.maxilog.me/poc/spring/order:${version} ."
+                            sh "docker push docker.maxilog.me/poc/spring/order:${version}"
                         }
                     }
                 }

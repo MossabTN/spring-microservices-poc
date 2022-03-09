@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: keycloak-config
 data:
-  KEYCLOAK_URL: https://keycloak.maxilog.tech
+  KEYCLOAK_URL: https://keycloak.maxilog.me
   KEYCLOAK_REALM: poc
 ---
 apiVersion: v1
@@ -814,14 +814,14 @@ stringData:
           "redirectUris": [
             "http://localhost:8080/*",
             "http://localhost:4200/*",
-            "http://poc-spring.maxilog.tech/*",
-            "https://poc-spring.maxilog.tech/*"
+            "http://poc-spring.maxilog.me/*",
+            "https://poc-spring.maxilog.me/*"
           ],
           "webOrigins": [
             "http://localhost:8080",
             "http://localhost:4200",
-            "http://poc-spring.maxilog.tech",
-            "https://poc-spring.maxilog.tech"
+            "http://poc-spring.maxilog.me",
+            "https://poc-spring.maxilog.me"
           ],
           "notBefore": 0,
           "bearerOnly": false,

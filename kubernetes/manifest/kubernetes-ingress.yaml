@@ -14,10 +14,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - poc-spring.maxilog.tech
+        - poc-spring.maxilog.me
       secretName: poc-spring-secret-tls
   rules:
-    - host: poc-spring.maxilog.tech
+    - host: poc-spring.maxilog.me
       http:
         paths:
           - path: /websocket/(.*)

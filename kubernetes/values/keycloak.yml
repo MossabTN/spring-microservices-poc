@@ -19,10 +19,10 @@ ingress:
   enabled: true
   tls:
     - hosts:
-        - keycloak.maxilog.tech
-      secretName: keycloak.maxilog.tech-tls
+        - keycloak.maxilog.me
+      secretName: keycloak.maxilog.me-tls
   rules:
-    - host: keycloak.maxilog.tech
+    - host: keycloak.maxilog.me
       paths:
         - /
   annotations:

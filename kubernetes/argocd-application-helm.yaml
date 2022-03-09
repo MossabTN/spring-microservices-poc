@@ -11,15 +11,15 @@ spec:
     helm:
       parameters:
         - name: 'keycloak.ingress.tls[0].hosts[0]'
-          value: kt.maxilog.tech
+          value: kt.maxilog.me
         - name: 'keycloak.ingress.tls[0].secretName'
-          value: keycloak.maxilog.tech-tls
+          value: keycloak.maxilog.me-tls
         - name: 'keycloak.ingress.rules[0].host'
-          value: kt.maxilog.tech
+          value: kt.maxilog.me
         - name: 'keycloak.ingress.rules[0].paths[0]'
           value: /
         - name: ingress.host
-          value: pt.maxilog.tech
+          value: pt.maxilog.me
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: poc-spring

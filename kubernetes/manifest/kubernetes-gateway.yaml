@@ -28,7 +28,7 @@ spec:
       serviceAccountName: spring-cloud-kubernetes-configuration-watcher
       containers:
         - name: gateway
-          image: docker.maxilog.tech/poc/spring/gateway:1.0.0
+          image: docker.maxilog.me/poc/spring/gateway:1.0.0
           ports:
             - containerPort: 8080
           imagePullPolicy: Always
