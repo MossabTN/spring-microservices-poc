@@ -4,7 +4,7 @@ podTemplate(
         label: label,
         containers: [
                 containerTemplate(name: 'maven', image: 'maven:3.6.3-openjdk-11', command: 'cat', ttyEnabled: true),
-                containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+                containerTemplate(name: 'kaniko', image: 'gcr.io/kaniko-project/executor:debug', command: '/busybox/cat', ttyEnabled: true),
                 containerTemplate(name: 'kubectl', image: 'bitnami/kubectl:1.20.2', command: 'cat', ttyEnabled: true)
         ],
         volumes: [
@@ -55,11 +55,11 @@ podTemplate(
                     }
                 }
                 stage('Create Docker images') {
-                    container('docker') {
+                    container('kaniko') {
                         withCredentials([usernamePassword(credentialsId: 'nexus', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
-                            sh "docker login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} docker.maxilog.me"
-                            sh "docker build -t docker.maxilog.me/poc/spring/gateway:${version} ."
-                            sh "docker push docker.maxilog.me/poc/spring/gateway:${version}"
+                            def credentials = sh(script: "printf \"%s:%s\" \"${NEXUS_USERNAME}\" \"${NEXUS_PASSWORD}\" | base64 | tr -d '\n'", returnStdout: true)
+                            sh "echo '{\"auths\":{\"docker.maxilog.me\":{\"auth\":\"${credentials}\"}}}' > /kaniko/.docker/config.json"
+                            sh "/kaniko/executor --dockerfile Dockerfile --context `pwd`/  --insecure --skip-tls-verify --cache=true --destination=docker.maxilog.me/poc/spring/gateway:${version}"
                         }
                     }
                 }
@@ -72,3 +72,5 @@ podTemplate(
         }
     }
 }
+
+--dockerfile Dockerfile --context `pwd`/
