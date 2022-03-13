@@ -72,5 +72,3 @@ podTemplate(
         }
     }
 }
-
---dockerfile Dockerfile --context `pwd`/
