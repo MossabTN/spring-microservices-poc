@@ -1,12 +1,7 @@
 FROM nginx:alpine
 EXPOSE 8080
 COPY /dist /usr/share/nginx/html
-COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
-
-RUN chmod -R 777 /var/log/nginx /var/cache/nginx /var/run \
-     && chgrp -R 0 /etc/nginx \
-     && chmod -R g+rwX /etc/nginx \
-     && rm /etc/nginx/conf.d/default.conf
+COPY ./.nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 ENV KEYCLOAK_URL=https://auth.maxilog.me/auth
 ENV KEYCLOAK_REALM=poc
