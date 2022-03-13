@@ -7,9 +7,6 @@ podTemplate(
                 containerTemplate(name: 'node', image: 'node:14.4', command: 'cat', ttyEnabled: true),
                 containerTemplate(name: 'kaniko', image: 'gcr.io/kaniko-project/executor:debug', command: '/busybox/cat', ttyEnabled: true),
                 containerTemplate(name: 'kubectl', image: 'bitnami/kubectl:1.20.2', command: 'cat', ttyEnabled: true)
-        ],
-        volumes: [
-                hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
         ]) {
     node(label) {
         stage('Checkout') {
