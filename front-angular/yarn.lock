@@ -356,6 +356,27 @@
     semver "6.2.0"
     semver-intersect "1.4.0"
 
+"@stomp/ng2-stompjs@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@stomp/ng2-stompjs/-/ng2-stompjs-8.0.0.tgz#7404aa699fb9fcf089f50633136a743b31b5cea9"
+  integrity sha512-1TTwdK7aUaRLfewG2FOqd3ZeIyIchKwOBzJytvUckjrBbpdeAXLXY0mCBFczoY16fSsxiAnZfJffFicStD+Dug==
+  dependencies:
+    "@stomp/rx-stomp" "^1.0.0 >=1.0.1"
+    tslib "^1.9.0"
+
+"@stomp/rx-stomp@^1.0.0 >=1.0.1":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@stomp/rx-stomp/-/rx-stomp-1.1.4.tgz#58137b6e113ec9f096768f3275ef94ea4ae59e14"
+  integrity sha512-qSwuySHGumFanzLdXCLnwxZ+ZPjyT1Bt1Gs99jRa/Li8Z0rsjJvUsGsOjNOb0LJUY/wNpytFNhPDKfuELlk4GQ==
+  dependencies:
+    "@stomp/stompjs" "^6.0.0 >=6.1.1"
+    angular2-uuid "^1.1.1"
+
+"@stomp/stompjs@^6.0.0 >=6.1.1":
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/@stomp/stompjs/-/stompjs-6.1.2.tgz#4ac3c380e8d1de1da94a3623d404e67de69dd01e"
+  integrity sha512-FHDTrIFM5Ospi4L3Xhj6v2+NzCVAeNDcBe95YjUWhWiRMrBF6uN3I7AUOlRgT6jU/2WQvvYK8ZaIxFfxFp+uHQ==
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -411,6 +432,11 @@
   version "3.0.16"
   resolved "https://registry.yarnpkg.com/@types/selenium-webdriver/-/selenium-webdriver-3.0.16.tgz#50a4755f8e33edacd9c406729e9b930d2451902a"
   integrity sha512-lMC2G0ItF2xv4UCiwbJGbnJlIuUixHrioOhNGHSCsYCJ8l4t9hMCUimCytvFv7qy6AfSzRxhRHoGa+UqaqwyeA==
+
+"@types/sockjs-client@^1.1.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@types/sockjs-client/-/sockjs-client-1.5.1.tgz#7ed2093da89305af370511c4e3beb7e4ef0d7e87"
+  integrity sha512-bmZM6A1GPdjF0bcuIUC+50hZEMGkzMsiG9by6X9U+7IZFOiPtz7MJ9h05FSpPVxlj4i+TzzoG3ESo1FJlbLb6A==
 
 "@types/source-list-map@*":
   version "0.1.2"
@@ -694,6 +720,11 @@ amdefine@>=0.0.4:
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
+angular2-uuid@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/angular2-uuid/-/angular2-uuid-1.1.1.tgz#72f03cd532b7f40032eb1ecfb9f8457384be956e"
+  integrity sha1-cvA81TK39AAy6x7PufhFc4S+lW4=
+
 ansi-colors@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-4.1.0.tgz#e1674bd61027c8c219b9edec929b6b57641b0c09"
@@ -896,9 +927,9 @@ async-limiter@~1.0.0:
   integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
 
 async@^2.5.0, async@^2.6.2:
-  version "2.6.3"
-  resolved "https://registry.yarnpkg.com/async/-/async-2.6.3.tgz#d72625e2344a3656e3a3ad4fa749fa83299d82ff"
-  integrity sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.6.4.tgz#706b7ff6084664cd7eae713f6f965433b5504221"
+  integrity sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==
   dependencies:
     lodash "^4.17.14"
 
@@ -4072,9 +4103,9 @@ lodash.tail@^4.1.1:
   integrity sha1-0jM6NtnncXyK0vfKyv7HwytERmQ=
 
 lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.4, lodash@^4.17.5:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 log4js@^4.0.0:
   version "4.5.1"
