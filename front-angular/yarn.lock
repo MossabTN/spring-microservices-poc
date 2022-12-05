@@ -356,6 +356,27 @@
     semver "6.2.0"
     semver-intersect "1.4.0"
 
+"@stomp/ng2-stompjs@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@stomp/ng2-stompjs/-/ng2-stompjs-8.0.0.tgz#7404aa699fb9fcf089f50633136a743b31b5cea9"
+  integrity sha512-1TTwdK7aUaRLfewG2FOqd3ZeIyIchKwOBzJytvUckjrBbpdeAXLXY0mCBFczoY16fSsxiAnZfJffFicStD+Dug==
+  dependencies:
+    "@stomp/rx-stomp" "^1.0.0 >=1.0.1"
+    tslib "^1.9.0"
+
+"@stomp/rx-stomp@^1.0.0 >=1.0.1":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@stomp/rx-stomp/-/rx-stomp-1.2.0.tgz#2cd7263e467428e0f4e1332dff93f37fb87cc297"
+  integrity sha512-QLzPe3q0EwLB+cVWdUFEO4z5tyR+kPnXJANKN2UvB7Spz/oViHF959cydmXdQWaK7NHp86VO54TgFfXbHVnSLg==
+  dependencies:
+    "@stomp/stompjs" "^6.0.0 >=6.1.1"
+    angular2-uuid "^1.1.1"
+
+"@stomp/stompjs@^6.0.0 >=6.1.1":
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/@stomp/stompjs/-/stompjs-6.1.2.tgz#4ac3c380e8d1de1da94a3623d404e67de69dd01e"
+  integrity sha512-FHDTrIFM5Ospi4L3Xhj6v2+NzCVAeNDcBe95YjUWhWiRMrBF6uN3I7AUOlRgT6jU/2WQvvYK8ZaIxFfxFp+uHQ==
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -411,6 +432,11 @@
   version "3.0.16"
   resolved "https://registry.yarnpkg.com/@types/selenium-webdriver/-/selenium-webdriver-3.0.16.tgz#50a4755f8e33edacd9c406729e9b930d2451902a"
   integrity sha512-lMC2G0ItF2xv4UCiwbJGbnJlIuUixHrioOhNGHSCsYCJ8l4t9hMCUimCytvFv7qy6AfSzRxhRHoGa+UqaqwyeA==
+
+"@types/sockjs-client@^1.1.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@types/sockjs-client/-/sockjs-client-1.5.1.tgz#7ed2093da89305af370511c4e3beb7e4ef0d7e87"
+  integrity sha512-bmZM6A1GPdjF0bcuIUC+50hZEMGkzMsiG9by6X9U+7IZFOiPtz7MJ9h05FSpPVxlj4i+TzzoG3ESo1FJlbLb6A==
 
 "@types/source-list-map@*":
   version "0.1.2"
@@ -693,6 +719,11 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
+
+angular2-uuid@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/angular2-uuid/-/angular2-uuid-1.1.1.tgz#72f03cd532b7f40032eb1ecfb9f8457384be956e"
+  integrity sha512-6AXPyii9q8KBFGagybLNVmdGJLPcVZAhmv3odNGSJIA18LuJ3xOe6uN9GvjlQsGfdmYeuxlsGnFEUu7gPhkc+g==
 
 ansi-colors@4.1.0:
   version "4.1.0"
@@ -1992,9 +2023,9 @@ decamelize@^1.2.0:
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
 
 decode-uri-component@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
-  integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.2.tgz#e69dbe25d37941171dd540e024c444cd5188e1e9"
+  integrity sha512-FqUYQ+8o158GyGTrMFJms9qh3CqTKvAqgqsTnkLI8sKu0028orqBhxNMFkFen0zGyg6epACD32pjVk58ngIErQ==
 
 deep-equal@^1.0.1:
   version "1.1.1"
